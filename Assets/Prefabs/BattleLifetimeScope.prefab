@@ -48,5 +48,6 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
+  _cameraBehaviourPrefab: {fileID: 2639177713450589932, guid: ea30f0a2e021cc1478fdc75d929aa66a, type: 3}
   _aircraftControllerPrefab: {fileID: 8592757194668446145, guid: cb2bdfa4fdfaf094b9c900d6184c29f2, type: 3}
   _aircraftModelPrefab: {fileID: 3498763596721585568, guid: 6f4304c0e26c0a649a87baea24a268c8, type: 3}
