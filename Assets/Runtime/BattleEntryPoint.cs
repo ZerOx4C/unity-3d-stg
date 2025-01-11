@@ -6,13 +6,13 @@ using VContainer.Unity;
 
 public class BattleEntryPoint : IAsyncStartable
 {
-    private readonly GameObject _aircraftControllerPrefab;
+    private readonly AircraftController _aircraftControllerPrefab;
     private readonly GameObject _aircraftModelPrefab;
     private readonly BattleCameraController _cameraController;
 
     [Inject]
     public BattleEntryPoint(
-        GameObject aircraftControllerPrefab,
+        AircraftController aircraftControllerPrefab,
         GameObject aircraftModelPrefab,
         BattleCameraController cameraController)
     {
@@ -26,7 +26,7 @@ public class BattleEntryPoint : IAsyncStartable
         var instances = await Object.InstantiateAsync(_aircraftControllerPrefab, 1,
             null, Vector3.zero, Quaternion.identity, cancellation);
 
-        var aircraftController = instances[0].GetComponent<AircraftController>();
+        var aircraftController = instances[0];
 
         await aircraftController.SetModel(_aircraftModelPrefab, cancellation);
 
