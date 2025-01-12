@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using R3;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +9,18 @@ public class DebugHud : MonoBehaviour
     private const float LogLifetime = 5f;
     private static List<LogEntry> _logEntries = new();
     private static bool _isLogDirty = true;
+    private static readonly Subject<Unit> _onReset = new();
+    public Button resetButton;
     public Text logText;
+
+    public static Observable<Unit> OnReset => _onReset;
+
+    private void Start()
+    {
+        resetButton.OnClickAsObservable()
+            .Subscribe(_ => _onReset.OnNext(Unit.Default))
+            .AddTo(this);
+    }
 
     private void Update()
     {

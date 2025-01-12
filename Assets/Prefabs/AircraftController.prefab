@@ -45,6 +45,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23de1bdfa7995ca4686f3c921ec06494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minDragFactor: 1
+  maxDragFactor: 5
+  liftFactor: 0.005
+  throttleAcceleration: 100
 --- !u!54 &6911163885930697151
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -42,35 +42,19 @@ public class BattleEntryPoint : IAsyncStartable, IDisposable
         _cameraController.SetFollowTarget(_aircraftController.transform);
 
         _aircraftInput.Pitch.OnProgress.Merge(_aircraftInput.Pitch.OnEnded)
-            .Subscribe(ctx =>
-            {
-                _aircraftController.Pitch = ctx.ReadValue<float>();
-                DebugHud.Log("Pitch", $"Pitch:{_aircraftController.Pitch}");
-            })
+            .Subscribe(c => _aircraftController.Pitch(c.ReadValue<float>()))
             .AddTo(_disposables);
 
         _aircraftInput.Roll.OnProgress.Merge(_aircraftInput.Roll.OnEnded)
-            .Subscribe(ctx =>
-            {
-                _aircraftController.Roll = ctx.ReadValue<float>();
-                DebugHud.Log("Roll", $"Roll:{_aircraftController.Roll}");
-            })
+            .Subscribe(c => _aircraftController.Roll(c.ReadValue<float>()))
             .AddTo(_disposables);
 
         _aircraftInput.Yaw.OnProgress.Merge(_aircraftInput.Yaw.OnEnded)
-            .Subscribe(ctx =>
-            {
-                _aircraftController.Yaw = ctx.ReadValue<float>();
-                DebugHud.Log("Yaw", $"Yaw:{_aircraftController.Yaw}");
-            })
+            .Subscribe(c => _aircraftController.Yaw(c.ReadValue<float>()))
             .AddTo(_disposables);
 
         _aircraftInput.Throttle.OnProgress.Merge(_aircraftInput.Throttle.OnEnded)
-            .Subscribe(ctx =>
-            {
-                _aircraftController.Throttle = ctx.ReadValue<float>();
-                DebugHud.Log("Throttle", $"Throttle:{_aircraftController.Throttle}");
-            })
+            .Subscribe(c => _aircraftController.Throttle(c.ReadValue<float>()))
             .AddTo(_disposables);
     }
 
