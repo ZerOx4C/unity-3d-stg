@@ -33,7 +33,7 @@ public class AircraftController : MonoBehaviour
 
     public async UniTask SetModel(GameObject prefab, CancellationToken cancellation)
     {
-        if (_model != null)
+        if (_model is null)
         {
             Destroy(_model);
             _model = null;
