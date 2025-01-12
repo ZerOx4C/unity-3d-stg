@@ -218,8 +218,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6094268749900534446}
   - component: {fileID: 9024133971196521671}
-  - component: {fileID: 1868360041748483175}
-  - component: {fileID: 4426898534815987902}
+  - component: {fileID: 1825716497124024022}
+  - component: {fileID: 781983124626302132}
   - component: {fileID: 6058102273419469607}
   m_Layer: 0
   m_Name: Follow
@@ -286,7 +286,7 @@ MonoBehaviour:
       BarrelClipping: 0.25
       Anamorphism: 0
   BlendHint: 0
---- !u!114 &1868360041748483175
+--- !u!114 &1825716497124024022
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -295,17 +295,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7333329032888683502}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b617507da6d07e749b7efdb34e1173e1, type: 3}
+  m_Script: {fileID: 11500000, guid: 36d1163fa822e8b418a0a603ec078d5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TrackerSettings:
-    BindingMode: 4
-    PositionDamping: {x: 1, y: 1, z: 1}
-    AngularDampingMode: 0
-    RotationDamping: {x: 1, y: 1, z: 1}
-    QuaternionDamping: 1
-  FollowOffset: {x: 0, y: 0, z: 0}
---- !u!114 &4426898534815987902
+  Damping: 0
+--- !u!114 &781983124626302132
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -314,10 +308,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7333329032888683502}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e8b78ac948f05a46a6d8339a503172b, type: 3}
+  m_Script: {fileID: 11500000, guid: 4afa82ae3200b82408d605c3dbdd1e38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LookAtOffset: {x: 0, y: 0, z: 0}
+  Damping: 5
 --- !u!114 &6058102273419469607
 MonoBehaviour:
   m_ObjectHideFlags: 0
