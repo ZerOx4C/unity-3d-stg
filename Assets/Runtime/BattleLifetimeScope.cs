@@ -25,9 +25,8 @@ public class BattleLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<AircraftInput>()
             .AsSelf();
 
-        builder.RegisterEntryPoint<BattleCameraController>()
-            .WithParameter(cameraBehaviourPrefab)
-            .AsSelf();
+        builder.Register<BattleCameraController>(Lifetime.Singleton)
+            .WithParameter(cameraBehaviourPrefab);
 
         builder.RegisterEntryPoint<BattleEntryPoint>()
             .WithParameter(aircraftControllerPrefab)

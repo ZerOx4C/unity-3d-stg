@@ -36,10 +36,10 @@ public class BattleEntryPoint : IAsyncStartable, IDisposable
 
         _aircraftController = instances[0];
 
-        await UniTask.WaitUntil(() => _cameraController.Ready, cancellationToken: cancellation);
-        _cameraController.SetFollowTarget(_aircraftController.transform);
-
+        await _cameraController.Ready(cancellation);
         await _aircraftController.SetModel(_aircraftModelPrefab, cancellation);
+
+        _cameraController.SetFollowTarget(_aircraftController.transform);
 
         _aircraftInput.Pitch.OnProgress.Merge(_aircraftInput.Pitch.OnEnded)
             .Subscribe(ctx =>
