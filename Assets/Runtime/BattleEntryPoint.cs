@@ -37,24 +37,24 @@ public class BattleEntryPoint : IAsyncStartable, IDisposable
         _aircraftController = instances[0];
 
         await _cameraController.Ready(cancellation);
-        await _aircraftController.SetModel(_aircraftModelPrefab, cancellation);
+        await _aircraftController.Renderer.LoadAsync(_aircraftModelPrefab, cancellation);
 
         _cameraController.SetFollowTarget(_aircraftController.transform);
 
         _aircraftInput.Pitch.OnProgress.Merge(_aircraftInput.Pitch.OnEnded)
-            .Subscribe(c => _aircraftController.Pitch(c.ReadValue<float>()))
+            .Subscribe(c => _aircraftController.Movement.Pitch(c.ReadValue<float>()))
             .AddTo(_disposables);
 
         _aircraftInput.Roll.OnProgress.Merge(_aircraftInput.Roll.OnEnded)
-            .Subscribe(c => _aircraftController.Roll(c.ReadValue<float>()))
+            .Subscribe(c => _aircraftController.Movement.Roll(c.ReadValue<float>()))
             .AddTo(_disposables);
 
         _aircraftInput.Yaw.OnProgress.Merge(_aircraftInput.Yaw.OnEnded)
-            .Subscribe(c => _aircraftController.Yaw(c.ReadValue<float>()))
+            .Subscribe(c => _aircraftController.Movement.Yaw(c.ReadValue<float>()))
             .AddTo(_disposables);
 
         _aircraftInput.Throttle.OnProgress.Merge(_aircraftInput.Throttle.OnEnded)
-            .Subscribe(c => _aircraftController.Throttle(c.ReadValue<float>()))
+            .Subscribe(c => _aircraftController.Movement.Throttle(c.ReadValue<float>()))
             .AddTo(_disposables);
     }
 
