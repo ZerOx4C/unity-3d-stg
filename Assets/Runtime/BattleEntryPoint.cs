@@ -10,11 +10,11 @@ using Object = UnityEngine.Object;
 public class BattleEntryPoint : IAsyncStartable, IDisposable
 {
     private readonly AircraftBehaviour _aircraftBehaviourPrefab;
-    private readonly AircraftInput _aircraftInput;
     private readonly GameObject _aircraftModelPrefab;
     private readonly BulletBehaviour _bulletPrefab;
     private readonly BattleCameraController _cameraController;
     private readonly CompositeDisposable _disposables = new();
+    private readonly PlayerAircraftController _playerAircraftController;
     private AircraftBehaviour _aircraftBehaviour;
 
     [Inject]
@@ -23,13 +23,13 @@ public class BattleEntryPoint : IAsyncStartable, IDisposable
         GameObject aircraftModelPrefab,
         BulletBehaviour bulletPrefab,
         BattleCameraController cameraController,
-        AircraftInput aircraftInput)
+        PlayerAircraftController playerAircraftController)
     {
         _aircraftBehaviourPrefab = aircraftBehaviourPrefab;
         _aircraftModelPrefab = aircraftModelPrefab;
         _bulletPrefab = bulletPrefab;
         _cameraController = cameraController;
-        _aircraftInput = aircraftInput;
+        _playerAircraftController = playerAircraftController;
     }
 
     public async UniTask StartAsync(CancellationToken cancellation)
@@ -43,30 +43,7 @@ public class BattleEntryPoint : IAsyncStartable, IDisposable
         await _aircraftBehaviour.Loader.LoadAsync(_aircraftModelPrefab, cancellation);
 
         _cameraController.SetFollowTarget(_aircraftBehaviour.transform);
-
-        _aircraftInput.Pitch.OnProgress.Merge(_aircraftInput.Pitch.OnEnded)
-            .Subscribe(c => _aircraftBehaviour.Movement.Pitch(c.ReadValue<float>()))
-            .AddTo(_disposables);
-
-        _aircraftInput.Roll.OnProgress.Merge(_aircraftInput.Roll.OnEnded)
-            .Subscribe(c => _aircraftBehaviour.Movement.Roll(c.ReadValue<float>()))
-            .AddTo(_disposables);
-
-        _aircraftInput.Yaw.OnProgress.Merge(_aircraftInput.Yaw.OnEnded)
-            .Subscribe(c => _aircraftBehaviour.Movement.Yaw(c.ReadValue<float>()))
-            .AddTo(_disposables);
-
-        _aircraftInput.Throttle.OnProgress.Merge(_aircraftInput.Throttle.OnEnded)
-            .Subscribe(c => _aircraftBehaviour.Movement.Throttle(c.ReadValue<float>()))
-            .AddTo(_disposables);
-
-        _aircraftInput.Fire.OnBegan
-            .Subscribe(_ => _aircraftBehaviour.Fire(true))
-            .AddTo(_disposables);
-
-        _aircraftInput.Fire.OnEnded
-            .Subscribe(_ => _aircraftBehaviour.Fire(false))
-            .AddTo(_disposables);
+        _playerAircraftController.Initialize(_aircraftBehaviour);
 
         _aircraftBehaviour.OnFire
             .Subscribe(Fire)
