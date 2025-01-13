@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using Behaviour;
 using Cysharp.Threading.Tasks;
+using Input;
 using R3;
 using UnityEngine;
 using VContainer;
@@ -11,12 +12,13 @@ using Object = UnityEngine.Object;
 public class BattleEntryPoint : IAsyncStartable, IDisposable
 {
     private readonly AircraftBehaviour _aircraftBehaviourPrefab;
+    private readonly AircraftInput _aircraftInput;
     private readonly GameObject _aircraftModelPrefab;
     private readonly BulletBehaviour _bulletPrefab;
     private readonly BattleCameraController _cameraController;
     private readonly CompositeDisposable _disposables = new();
-    private readonly PlayerAircraftController _playerAircraftController;
     private AircraftBehaviour _aircraftBehaviour;
+    private PlayerAircraftController _playerAircraftController;
 
     [Inject]
     public BattleEntryPoint(
@@ -24,13 +26,13 @@ public class BattleEntryPoint : IAsyncStartable, IDisposable
         GameObject aircraftModelPrefab,
         BulletBehaviour bulletPrefab,
         BattleCameraController cameraController,
-        PlayerAircraftController playerAircraftController)
+        AircraftInput aircraftInput)
     {
         _aircraftBehaviourPrefab = aircraftBehaviourPrefab;
         _aircraftModelPrefab = aircraftModelPrefab;
         _bulletPrefab = bulletPrefab;
         _cameraController = cameraController;
-        _playerAircraftController = playerAircraftController;
+        _aircraftInput = aircraftInput;
     }
 
     public async UniTask StartAsync(CancellationToken cancellation)
@@ -41,11 +43,13 @@ public class BattleEntryPoint : IAsyncStartable, IDisposable
         await _aircraftBehaviour.Loader.LoadAsync(_aircraftModelPrefab, cancellation);
 
         _cameraController.SetFollowTarget(_aircraftBehaviour.transform);
-        _playerAircraftController.Initialize(_aircraftBehaviour);
 
         _aircraftBehaviour.OnFire
             .Subscribe(Fire)
             .AddTo(_disposables);
+
+        _playerAircraftController = new PlayerAircraftController(_aircraftBehaviour, _aircraftInput);
+        _playerAircraftController.Initialize();
     }
 
     public void Dispose()
