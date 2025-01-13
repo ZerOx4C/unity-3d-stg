@@ -19,6 +19,11 @@ public class BulletBehaviour : MonoBehaviour
         {
             _lifetime -= Time.deltaTime;
         }
+        else
+        {
+            // TODO: 後でプール化する
+            Destroy(gameObject);
+        }
     }
 
     public void Initialize()
