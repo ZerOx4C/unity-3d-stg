@@ -4,8 +4,6 @@ namespace Movement
 {
     public class AircraftMovement : MonoBehaviour, IMovement
     {
-        private static readonly Vector3 Gravity = Physics.gravity;
-
         public float throttleAcceleration = 1;
         public float minDragFactor = 1;
         public float maxDragFactor = 1;
@@ -45,9 +43,7 @@ namespace Movement
             var velocity = _rigidbody.linearVelocity;
             velocity += dt * _throttle * throttleAcceleration * transform.forward;
             velocity += dt * CalcLift(velocity, transform, liftFactor);
-            velocity += dt * Gravity;
             velocity += dt * CalcDrag(velocity, transform, minDragFactor, maxDragFactor);
-            velocity -= dt * Gravity;
             _rigidbody.linearVelocity = velocity;
 
             _rigidbody.angularVelocity = Time.fixedDeltaTime *
