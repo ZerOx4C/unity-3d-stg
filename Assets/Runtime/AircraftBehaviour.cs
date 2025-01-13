@@ -1,7 +1,7 @@
 using R3;
 using UnityEngine;
 
-public class AircraftController : MonoBehaviour
+public class AircraftBehaviour : MonoBehaviour
 {
     private bool _fire;
     private float _fireCooldown;

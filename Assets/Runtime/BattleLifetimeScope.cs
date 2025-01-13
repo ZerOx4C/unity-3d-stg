@@ -8,7 +8,7 @@ public class BattleLifetimeScope : LifetimeScope
     public DebugHud debugHudPrefab;
 #endif
     public BattleCameraBehaviour cameraBehaviourPrefab;
-    public AircraftController aircraftControllerPrefab;
+    public AircraftBehaviour aircraftBehaviourPrefab;
     public BulletBehaviour bulletPrefab;
     public GameObject aircraftModelPrefab;
 
@@ -30,7 +30,7 @@ public class BattleLifetimeScope : LifetimeScope
             .WithParameter(cameraBehaviourPrefab);
 
         builder.RegisterEntryPoint<BattleEntryPoint>()
-            .WithParameter(aircraftControllerPrefab)
+            .WithParameter(aircraftBehaviourPrefab)
             .WithParameter(aircraftModelPrefab)
             .WithParameter(bulletPrefab);
     }
