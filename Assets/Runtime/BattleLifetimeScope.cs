@@ -25,8 +25,7 @@ public class BattleLifetimeScope : LifetimeScope
 
     protected override void Configure(IContainerBuilder builder)
     {
-        builder.RegisterEntryPoint<AircraftInput>()
-            .AsSelf();
+        builder.Register<AircraftInput>(Lifetime.Singleton);
 
         builder.Register<BattleCameraController>(Lifetime.Singleton)
             .WithParameter(cameraBehaviourPrefab);

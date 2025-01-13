@@ -89,6 +89,7 @@ public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
             return;
         }
 
+        _aircraftInput.Tick();
         _enemyAircraftController.Tick();
     }
 

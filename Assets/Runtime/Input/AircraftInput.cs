@@ -1,10 +1,9 @@
 using System;
 using UnityEngine.InputSystem;
-using VContainer.Unity;
 
 namespace Input
 {
-    public class AircraftInput : InputSystem_Actions.IAircraftActions, ITickable, IDisposable
+    public class AircraftInput : InputSystem_Actions.IAircraftActions, IDisposable
     {
         private readonly InputSubject _fire = new();
         private readonly InputSystem_Actions _inputActions = new();
