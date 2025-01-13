@@ -2,7 +2,6 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer;
-using Object = UnityEngine.Object;
 
 public class BattleCameraController
 {
@@ -15,10 +14,9 @@ public class BattleCameraController
         _cameraBehaviourPrefab = cameraBehaviourPrefab;
     }
 
-    public async UniTask Ready(CancellationToken cancellation)
+    public async UniTask ReadyAsync(CancellationToken cancellation)
     {
-        var instances = await Object.InstantiateAsync(_cameraBehaviourPrefab);
-        _cameraBehaviour = instances[0];
+        _cameraBehaviour = await Utility.InstantiateAsync(_cameraBehaviourPrefab, cancellationToken: cancellation);
     }
 
     public void SetFollowTarget(Transform target)

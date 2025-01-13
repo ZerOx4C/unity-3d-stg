@@ -34,12 +34,9 @@ public class BattleEntryPoint : IAsyncStartable, IDisposable
 
     public async UniTask StartAsync(CancellationToken cancellation)
     {
-        var instances = await Object.InstantiateAsync(_aircraftBehaviourPrefab, 1,
-            null, Vector3.zero, Quaternion.identity, cancellation);
+        _aircraftBehaviour = await Utility.InstantiateAsync(_aircraftBehaviourPrefab, cancellationToken: cancellation);
 
-        _aircraftBehaviour = instances[0];
-
-        await _cameraController.Ready(cancellation);
+        await _cameraController.ReadyAsync(cancellation);
         await _aircraftBehaviour.Loader.LoadAsync(_aircraftModelPrefab, cancellation);
 
         _cameraController.SetFollowTarget(_aircraftBehaviour.transform);
