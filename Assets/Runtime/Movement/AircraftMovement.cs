@@ -28,15 +28,6 @@ namespace Movement
             Throttle(0);
         }
 
-        private void Update()
-        {
-            DebugHud.Log("pitch", $"pitch:{_pitch}");
-            DebugHud.Log("roll", $"roll:{_roll}");
-            DebugHud.Log("yaw", $"yaw:{_yaw}");
-            DebugHud.Log("throttle", $"throttle:{_throttle}");
-            DebugHud.Log("velocity", $"velocity:{_rigidbody.linearVelocity}");
-        }
-
         private void FixedUpdate()
         {
             var dt = Time.fixedDeltaTime;

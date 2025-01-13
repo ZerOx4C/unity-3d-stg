@@ -19,6 +19,7 @@ public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
     private readonly CompositeDisposable _disposables = new();
     private EnemyAircraftController _enemyAircraftController;
     private bool _initialized;
+    private AircraftBehaviour _playerAircraft;
     private PlayerAircraftController _playerAircraftController;
 
     [Inject]
@@ -73,6 +74,8 @@ public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
             })
             .AddTo(_disposables);
 
+        _playerAircraft = playerAircraft;
+
         _initialized = true;
     }
 
@@ -91,6 +94,9 @@ public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
 
         _aircraftInput.Tick();
         _enemyAircraftController.Tick();
+
+        DebugHud.Log("speed", $"speed:{Vector3.Dot(_playerAircraft.transform.forward, _playerAircraft.Movement.LinearVelocity)}");
+        DebugHud.Log("altitude", $"altitude:{_playerAircraft.transform.position.y}");
     }
 
     private void Fire(AircraftBehaviour aircraft, Transform gun)
