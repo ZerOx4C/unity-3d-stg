@@ -19,7 +19,8 @@ public class ModelLoader : MonoBehaviour
             _model = null;
         }
 
-        _model = await Utility.InstantiateAsync(prefab, transform, cancellation);
+        _model = await Utility.InstantiateAsync(prefab,
+            transform.position, transform.rotation, transform, cancellation);
 
         _guns = GameObject.FindGameObjectsWithTag("Gun")
             .Select(g => g.transform)

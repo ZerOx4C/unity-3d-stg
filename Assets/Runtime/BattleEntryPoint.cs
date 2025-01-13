@@ -9,7 +9,7 @@ using VContainer;
 using VContainer.Unity;
 using Object = UnityEngine.Object;
 
-public class BattleEntryPoint : IAsyncStartable, IDisposable
+public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
 {
     private readonly AircraftBehaviour _aircraftBehaviourPrefab;
     private readonly AircraftInput _aircraftInput;
@@ -17,7 +17,8 @@ public class BattleEntryPoint : IAsyncStartable, IDisposable
     private readonly BulletBehaviour _bulletPrefab;
     private readonly BattleCameraController _cameraController;
     private readonly CompositeDisposable _disposables = new();
-    private AircraftBehaviour _aircraftBehaviour;
+    private EnemyAircraftController _enemyAircraftController;
+    private bool _initialized;
     private PlayerAircraftController _playerAircraftController;
 
     [Inject]
@@ -37,30 +38,64 @@ public class BattleEntryPoint : IAsyncStartable, IDisposable
 
     public async UniTask StartAsync(CancellationToken cancellation)
     {
-        _aircraftBehaviour = await Utility.InstantiateAsync(_aircraftBehaviourPrefab, cancellationToken: cancellation);
+        var playerAircraft = await Utility.InstantiateAsync(_aircraftBehaviourPrefab, cancellationToken: cancellation);
+        var enemyAircraft = await Utility.InstantiateAsync(_aircraftBehaviourPrefab,
+            new Vector3(0, 0, 100), Quaternion.identity, cancellationToken: cancellation);
 
         await _cameraController.ReadyAsync(cancellation);
-        await _aircraftBehaviour.Loader.LoadAsync(_aircraftModelPrefab, cancellation);
+        _cameraController.SetFollowTarget(playerAircraft.transform);
 
-        _cameraController.SetFollowTarget(_aircraftBehaviour.transform);
+        await playerAircraft.Loader.LoadAsync(_aircraftModelPrefab, cancellation);
+        await enemyAircraft.Loader.LoadAsync(_aircraftModelPrefab, cancellation);
 
-        _aircraftBehaviour.OnFire
-            .Subscribe(Fire)
+        playerAircraft.OnFire
+            .Subscribe(gun => Fire(playerAircraft, gun))
             .AddTo(_disposables);
 
-        _playerAircraftController = new PlayerAircraftController(_aircraftBehaviour, _aircraftInput);
+        enemyAircraft.OnFire
+            .Subscribe(gun => Fire(enemyAircraft, gun))
+            .AddTo(_disposables);
+
+        _playerAircraftController = new PlayerAircraftController(playerAircraft, _aircraftInput);
         _playerAircraftController.Initialize();
+
+        _enemyAircraftController = new EnemyAircraftController(enemyAircraft);
+        _enemyAircraftController.Initialize();
+
+        playerAircraft.Ready();
+        enemyAircraft.Ready();
+
+        DebugHud.OnReset
+            .Subscribe(_ =>
+            {
+                playerAircraft.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
+                playerAircraft.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+            })
+            .AddTo(_disposables);
+
+        _initialized = true;
     }
 
     public void Dispose()
     {
         _disposables.Dispose();
+        _playerAircraftController.Dispose();
     }
 
-    private void Fire(Transform gun)
+    public void Tick()
+    {
+        if (!_initialized)
+        {
+            return;
+        }
+
+        _enemyAircraftController.Tick();
+    }
+
+    private void Fire(AircraftBehaviour aircraft, Transform gun)
     {
         var bullet = Object.Instantiate(_bulletPrefab);
-        bullet.Movement.Initialize(_aircraftBehaviour.Movement, gun, 100);
+        bullet.Movement.Initialize(aircraft.Movement, gun, 100);
         bullet.Initialize();
     }
 }

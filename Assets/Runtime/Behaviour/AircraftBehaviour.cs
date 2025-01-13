@@ -22,17 +22,9 @@ namespace Behaviour
             Loader = GetComponent<ModelLoader>();
             _rigidbody = GetComponent<Rigidbody>();
             _onFire = new Subject<Transform>();
-        }
 
-        private void Start()
-        {
-            DebugHud.OnReset
-                .Subscribe(_ =>
-                {
-                    _rigidbody.linearVelocity = Vector3.zero;
-                    transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-                })
-                .AddTo(this);
+            Movement.enabled = false;
+            _rigidbody.isKinematic = true;
         }
 
         private void Update()
@@ -58,6 +50,12 @@ namespace Behaviour
         private void OnDestroy()
         {
             _onFire.Dispose();
+        }
+
+        public void Ready()
+        {
+            Movement.enabled = true;
+            _rigidbody.isKinematic = false;
         }
 
         public void Fire(bool active)
