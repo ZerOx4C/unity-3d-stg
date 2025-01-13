@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AircraftMovement : MonoBehaviour
+public class AircraftMovement : MonoBehaviour, IMovement
 {
     private static readonly Vector3 Gravity = Physics.gravity;
 
@@ -53,6 +53,8 @@ public class AircraftMovement : MonoBehaviour
                                       _pitch * pitchFactor * -transform.right +
                                       _yaw * yawFactor * transform.up);
     }
+
+    public Vector3 LinearVelocity => _rigidbody.linearVelocity;
 
     public void Pitch(float input)
     {

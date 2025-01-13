@@ -615,7 +615,7 @@ GameObject:
   - component: {fileID: 7770715810926795401}
   m_Layer: 0
   m_Name: GunR
-  m_TagString: Untagged
+  m_TagString: Gun
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -697,6 +697,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2093771170908534057}
+  - component: {fileID: 5520668473038070894}
   m_Layer: 0
   m_Name: Aircraft
   m_TagString: Untagged
@@ -731,6 +732,27 @@ Transform:
   - {fileID: 3938141094338436614}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &5520668473038070894
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3498763596721585568}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 2
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5275345763827066586
 GameObject:
   m_ObjectHideFlags: 0
@@ -744,7 +766,7 @@ GameObject:
   - component: {fileID: 272419230985081769}
   m_Layer: 0
   m_Name: GunL
-  m_TagString: Untagged
+  m_TagString: Gun
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

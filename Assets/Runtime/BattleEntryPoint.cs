@@ -12,6 +12,7 @@ public class BattleEntryPoint : IAsyncStartable, IDisposable
     private readonly AircraftController _aircraftControllerPrefab;
     private readonly AircraftInput _aircraftInput;
     private readonly GameObject _aircraftModelPrefab;
+    private readonly BulletBehaviour _bulletPrefab;
     private readonly BattleCameraController _cameraController;
     private readonly CompositeDisposable _disposables = new();
     private AircraftController _aircraftController;
@@ -20,11 +21,13 @@ public class BattleEntryPoint : IAsyncStartable, IDisposable
     public BattleEntryPoint(
         AircraftController aircraftControllerPrefab,
         GameObject aircraftModelPrefab,
+        BulletBehaviour bulletPrefab,
         BattleCameraController cameraController,
         AircraftInput aircraftInput)
     {
         _aircraftControllerPrefab = aircraftControllerPrefab;
         _aircraftModelPrefab = aircraftModelPrefab;
+        _bulletPrefab = bulletPrefab;
         _cameraController = cameraController;
         _aircraftInput = aircraftInput;
     }
@@ -37,7 +40,7 @@ public class BattleEntryPoint : IAsyncStartable, IDisposable
         _aircraftController = instances[0];
 
         await _cameraController.Ready(cancellation);
-        await _aircraftController.Renderer.LoadAsync(_aircraftModelPrefab, cancellation);
+        await _aircraftController.Loader.LoadAsync(_aircraftModelPrefab, cancellation);
 
         _cameraController.SetFollowTarget(_aircraftController.transform);
 
@@ -56,10 +59,29 @@ public class BattleEntryPoint : IAsyncStartable, IDisposable
         _aircraftInput.Throttle.OnProgress.Merge(_aircraftInput.Throttle.OnEnded)
             .Subscribe(c => _aircraftController.Movement.Throttle(c.ReadValue<float>()))
             .AddTo(_disposables);
+
+        _aircraftInput.Fire.OnBegan
+            .Subscribe(_ => _aircraftController.Fire(true))
+            .AddTo(_disposables);
+
+        _aircraftInput.Fire.OnEnded
+            .Subscribe(_ => _aircraftController.Fire(false))
+            .AddTo(_disposables);
+
+        _aircraftController.OnFire
+            .Subscribe(Fire)
+            .AddTo(_disposables);
     }
 
     public void Dispose()
     {
         _disposables.Dispose();
+    }
+
+    private void Fire(Transform gun)
+    {
+        var bullet = Object.Instantiate(_bulletPrefab);
+        bullet.Movement.Initialize(_aircraftController.Movement, gun, 100);
+        bullet.Initialize();
     }
 }

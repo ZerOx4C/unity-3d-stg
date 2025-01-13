@@ -4,6 +4,7 @@ using VContainer.Unity;
 
 public class AircraftInput : InputSystem_Actions.IAircraftActions, ITickable, IDisposable
 {
+    private readonly InputSubject _fire = new();
     private readonly InputSystem_Actions _inputActions = new();
     private readonly InputSubject _pitch = new();
     private readonly InputSubject _roll = new();
@@ -20,6 +21,7 @@ public class AircraftInput : InputSystem_Actions.IAircraftActions, ITickable, ID
     public IInputObservable Roll => _roll;
     public IInputObservable Yaw => _yaw;
     public IInputObservable Throttle => _throttle;
+    public IInputObservable Fire => _fire;
 
     public void OnPitch(InputAction.CallbackContext context)
     {
@@ -41,6 +43,11 @@ public class AircraftInput : InputSystem_Actions.IAircraftActions, ITickable, ID
         _throttle.OnNext(context);
     }
 
+    public void OnFire(InputAction.CallbackContext context)
+    {
+        _fire.OnNext(context);
+    }
+
     public void Dispose()
     {
         _inputActions.Aircraft.Disable();
@@ -49,6 +56,7 @@ public class AircraftInput : InputSystem_Actions.IAircraftActions, ITickable, ID
         _roll.Dispose();
         _yaw.Dispose();
         _throttle.Dispose();
+        _fire.Dispose();
     }
 
     public void Tick()
@@ -57,5 +65,6 @@ public class AircraftInput : InputSystem_Actions.IAircraftActions, ITickable, ID
         _roll.Tick();
         _yaw.Tick();
         _throttle.Tick();
+        _fire.Tick();
     }
 }

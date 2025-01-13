@@ -9,6 +9,7 @@ public class BattleLifetimeScope : LifetimeScope
 #endif
     public BattleCameraBehaviour cameraBehaviourPrefab;
     public AircraftController aircraftControllerPrefab;
+    public BulletBehaviour bulletPrefab;
     public GameObject aircraftModelPrefab;
 
     protected override void Awake()
@@ -30,6 +31,7 @@ public class BattleLifetimeScope : LifetimeScope
 
         builder.RegisterEntryPoint<BattleEntryPoint>()
             .WithParameter(aircraftControllerPrefab)
-            .WithParameter(aircraftModelPrefab);
+            .WithParameter(aircraftModelPrefab)
+            .WithParameter(bulletPrefab);
     }
 }

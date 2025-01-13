@@ -62,6 +62,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Fire"",
+                    ""type"": ""Button"",
+                    ""id"": ""7ecd7f6b-42f2-44f3-8f94-3a5fa4b887df"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -196,6 +205,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""Throttle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f3c78715-b070-4417-9f39-0c0466b99182"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -785,6 +805,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Aircraft_Roll = m_Aircraft.FindAction("Roll", throwIfNotFound: true);
         m_Aircraft_Yaw = m_Aircraft.FindAction("Yaw", throwIfNotFound: true);
         m_Aircraft_Throttle = m_Aircraft.FindAction("Throttle", throwIfNotFound: true);
+        m_Aircraft_Fire = m_Aircraft.FindAction("Fire", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -868,6 +889,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Aircraft_Roll;
     private readonly InputAction m_Aircraft_Yaw;
     private readonly InputAction m_Aircraft_Throttle;
+    private readonly InputAction m_Aircraft_Fire;
     public struct AircraftActions
     {
         private @InputSystem_Actions m_Wrapper;
@@ -876,6 +898,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @Roll => m_Wrapper.m_Aircraft_Roll;
         public InputAction @Yaw => m_Wrapper.m_Aircraft_Yaw;
         public InputAction @Throttle => m_Wrapper.m_Aircraft_Throttle;
+        public InputAction @Fire => m_Wrapper.m_Aircraft_Fire;
         public InputActionMap Get() { return m_Wrapper.m_Aircraft; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -897,6 +920,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Throttle.started += instance.OnThrottle;
             @Throttle.performed += instance.OnThrottle;
             @Throttle.canceled += instance.OnThrottle;
+            @Fire.started += instance.OnFire;
+            @Fire.performed += instance.OnFire;
+            @Fire.canceled += instance.OnFire;
         }
 
         private void UnregisterCallbacks(IAircraftActions instance)
@@ -913,6 +939,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Throttle.started -= instance.OnThrottle;
             @Throttle.performed -= instance.OnThrottle;
             @Throttle.canceled -= instance.OnThrottle;
+            @Fire.started -= instance.OnFire;
+            @Fire.performed -= instance.OnFire;
+            @Fire.canceled -= instance.OnFire;
         }
 
         public void RemoveCallbacks(IAircraftActions instance)
@@ -1099,6 +1128,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnRoll(InputAction.CallbackContext context);
         void OnYaw(InputAction.CallbackContext context);
         void OnThrottle(InputAction.CallbackContext context);
+        void OnFire(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
