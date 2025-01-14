@@ -52,4 +52,5 @@ MonoBehaviour:
   cameraBehaviourPrefab: {fileID: 2639177713450589932, guid: ea30f0a2e021cc1478fdc75d929aa66a, type: 3}
   aircraftBehaviourPrefab: {fileID: 7879260481791334755, guid: cb2bdfa4fdfaf094b9c900d6184c29f2, type: 3}
   bulletPrefab: {fileID: 905725347599717483, guid: f8b4f0623d6043949a74ed9bde68b9e5, type: 3}
+  stagePrefab: {fileID: 7983943320075651010, guid: 05b77b211694f2345ac2af1bc582bfaa, type: 3}
   aircraftModelPrefab: {fileID: 3498763596721585568, guid: 6f4304c0e26c0a649a87baea24a268c8, type: 3}
