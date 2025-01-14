@@ -96,7 +96,7 @@ public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
             controller.Tick();
         }
 
-        DebugHud.Log("speed", $"speed:{Vector3.Dot(_playerAircraft.transform.forward, _playerAircraft.Movement.LinearVelocity)}");
-        DebugHud.Log("altitude", $"altitude:{_playerAircraft.transform.position.y}");
+        DebugHud.Log("speed", $"speed:{Vector3.Dot(_playerAircraft.transform.forward, _playerAircraft.Movement.LinearVelocity):f2}");
+        DebugHud.Log("altitude", $"altitude:{_playerAircraft.transform.position.y:f2}");
     }
 }
