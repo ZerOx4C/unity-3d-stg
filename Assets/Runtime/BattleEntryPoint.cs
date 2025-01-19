@@ -7,6 +7,7 @@ using Cysharp.Threading.Tasks;
 using Input;
 using Model;
 using R3;
+using Stage;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -20,7 +21,7 @@ public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
     private readonly List<EnemyAircraftController> _enemyAircraftControllers = new();
     private readonly AircraftModel _playerAircraftModelPrefab;
     private readonly StageLoader _stageLoader;
-    private readonly GameObject _stagePrefab;
+    private readonly StageLayout _stageLayoutPrefab;
     private bool _initialized;
     private AircraftBehaviour _playerAircraft;
     private PlayerAircraftController _playerAircraftController;
@@ -31,21 +32,21 @@ public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
         BulletBehaviour bulletPrefab,
         BattleCameraController cameraController,
         AircraftInput aircraftInput,
-        GameObject stagePrefab,
+        StageLayout stageLayoutPrefab,
         StageLoader stageLoader)
     {
         _playerAircraftModelPrefab = playerAircraftModelPrefab;
         _bulletPrefab = bulletPrefab;
         _cameraController = cameraController;
         _aircraftInput = aircraftInput;
-        _stagePrefab = stagePrefab;
+        _stageLayoutPrefab = stageLayoutPrefab;
         _stageLoader = stageLoader;
     }
 
     public async UniTask StartAsync(CancellationToken cancellation)
     {
         _stageLoader.SetPlayerAircraftModelPrefab(_playerAircraftModelPrefab);
-        var loadResult = await _stageLoader.LoadAsync(_stagePrefab, cancellation);
+        var loadResult = await _stageLoader.LoadAsync(_stageLayoutPrefab, cancellation);
 
         var playerAircraft = loadResult.PlayerAircraft;
         _playerAircraftController = new PlayerAircraftController(playerAircraft, _aircraftInput, _bulletPrefab);

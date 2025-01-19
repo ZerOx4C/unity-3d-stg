@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4400002042103461841}
-  - component: {fileID: 8903639972187273155}
+  - component: {fileID: 1567879585068291869}
   m_Layer: 0
   m_Name: Enemy (1)
   m_TagString: Locator
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3085551453606233812}
   m_LocalEulerAnglesHint: {x: 0, y: -135, z: 0}
---- !u!114 &8903639972187273155
+--- !u!114 &1567879585068291869
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,10 +41,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 697789530883629168}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90c2dd4d058b5514d9058cdbae6fc7ab, type: 3}
+  m_Script: {fileID: 11500000, guid: 03ef8a398475429ea5e7d2004adf3430, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPlayer: 0
   modelPrefab: {fileID: 6331625549027247271, guid: 6f4304c0e26c0a649a87baea24a268c8, type: 3}
 --- !u!1 &1411329475980385112
 GameObject:
@@ -164,7 +163,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5223705164181485382}
-  - component: {fileID: 5425096895157876212}
+  - component: {fileID: 8636971984399561024}
   m_Layer: 0
   m_Name: Player
   m_TagString: Locator
@@ -187,7 +186,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3085551453606233812}
   m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
---- !u!114 &5425096895157876212
+--- !u!114 &8636971984399561024
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -196,11 +195,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1978548341137133144}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90c2dd4d058b5514d9058cdbae6fc7ab, type: 3}
+  m_Script: {fileID: 11500000, guid: 2d47e6108088429985995472287919d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPlayer: 1
-  modelPrefab: {fileID: 0}
 --- !u!1 &7413828651917765323
 GameObject:
   m_ObjectHideFlags: 0
@@ -210,7 +207,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5941618091316347171}
-  - component: {fileID: 8413121613286127721}
+  - component: {fileID: 3443382640929184595}
   m_Layer: 0
   m_Name: Enemy (2)
   m_TagString: Locator
@@ -233,7 +230,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3085551453606233812}
   m_LocalEulerAnglesHint: {x: 0, y: -135, z: 0}
---- !u!114 &8413121613286127721
+--- !u!114 &3443382640929184595
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -242,10 +239,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7413828651917765323}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90c2dd4d058b5514d9058cdbae6fc7ab, type: 3}
+  m_Script: {fileID: 11500000, guid: 03ef8a398475429ea5e7d2004adf3430, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPlayer: 0
   modelPrefab: {fileID: 6331625549027247271, guid: 6f4304c0e26c0a649a87baea24a268c8, type: 3}
 --- !u!1 &7983943320075651010
 GameObject:
@@ -256,6 +252,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3085551453606233812}
+  - component: {fileID: 9178224638344324190}
   m_Layer: 0
   m_Name: Stage
   m_TagString: Untagged
@@ -283,6 +280,23 @@ Transform:
   - {fileID: 5941618091316347171}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9178224638344324190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7983943320075651010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74a1e09fdc8e4683973eafefa868dd83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerLocator: {fileID: 8636971984399561024}
+  enemyAircraftLocators:
+  - {fileID: 6951093119109628986}
+  - {fileID: 1567879585068291869}
+  - {fileID: 3443382640929184595}
 --- !u!1 &8609120966759157967
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,7 +306,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4557257797678487791}
-  - component: {fileID: 7975102109877780079}
+  - component: {fileID: 6951093119109628986}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Locator
@@ -315,7 +329,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3085551453606233812}
   m_LocalEulerAnglesHint: {x: 0, y: -135, z: 0}
---- !u!114 &7975102109877780079
+--- !u!114 &6951093119109628986
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -324,8 +338,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8609120966759157967}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90c2dd4d058b5514d9058cdbae6fc7ab, type: 3}
+  m_Script: {fileID: 11500000, guid: 03ef8a398475429ea5e7d2004adf3430, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPlayer: 0
   modelPrefab: {fileID: 6331625549027247271, guid: 6f4304c0e26c0a649a87baea24a268c8, type: 3}

@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Behaviour;
 using Cysharp.Threading.Tasks;
 using Model;
+using Stage;
 using UnityEngine;
 using VContainer;
 using Object = UnityEngine.Object;
@@ -24,50 +26,51 @@ public class StageLoader
         _playerAircraftModelPrefab = aircraftModelPrefab;
     }
 
-    public async UniTask<Result> LoadAsync(GameObject stagePrefab, CancellationToken cancellation)
+    public async UniTask<Result> LoadAsync(StageLayout stageLayoutPrefab, CancellationToken cancellation)
     {
         var result = new Result();
 
-        var stage = await Utility.InstantiateAsync(stagePrefab, cancellationToken: cancellation);
+        var stageLayout = await Utility.InstantiateAsync(stageLayoutPrefab, cancellationToken: cancellation);
+        var playerAircraft = (await InstantiateWithLocatorAsync(_aircraftBehaviourPrefab, new[] { stageLayout.PlayerLocator }, cancellation))[0];
+        var enemyAircrafts = await InstantiateWithLocatorAsync(_aircraftBehaviourPrefab, stageLayout.EnemyAircraftLocators, cancellation);
 
-        var locators = stage.transform.GetComponentsInChildren<SpawnLocator>();
-        var positions = new Vector3[locators.Length];
-        var rotations = new Quaternion[locators.Length];
+        var loadTasks = new Stack<UniTask>();
+        loadTasks.Push(playerAircraft.LoadModelAsync(_playerAircraftModelPrefab, cancellation));
 
-        for (var i = 0; i < locators.Length; i++)
+        for (var i = 0; i < enemyAircrafts.Length; i++)
         {
-            locators[i].transform.GetPositionAndRotation(out positions[i], out rotations[i]);
-        }
-
-        var aircrafts = await Object.InstantiateAsync(_aircraftBehaviourPrefab, locators.Length, null,
-            new ReadOnlySpan<Vector3>(positions), new ReadOnlySpan<Quaternion>(rotations), cancellation);
-
-        var loadTasks = new UniTask[aircrafts.Length];
-
-        for (var i = 0; i < aircrafts.Length; i++)
-        {
-            var aircraft = aircrafts[i];
-            var locator = locators[i];
-
-            if (locator.isPlayer)
-            {
-                loadTasks[i] = aircraft.LoadModelAsync(_playerAircraftModelPrefab, cancellation);
-                result.PlayerAircraft = aircraft;
-            }
-            else
-            {
-                loadTasks[i] = aircraft.LoadModelAsync(locator.modelPrefab, cancellation);
-                result.EnemyAircrafts.Add(aircraft);
-            }
+            var aircraft = enemyAircrafts[i];
+            var locator = stageLayout.EnemyAircraftLocators[i];
+            loadTasks.Push(aircraft.LoadModelAsync(locator.modelPrefab, cancellation));
         }
 
         await UniTask.WhenAll(loadTasks);
-        return result;
+        return new Result
+        {
+            EnemyAircrafts = enemyAircrafts,
+            PlayerAircraft = playerAircraft
+        };
+    }
+
+    private static async UniTask<T[]> InstantiateWithLocatorAsync<T>(T prefab, IEnumerable<MonoBehaviour> locators,
+        CancellationToken cancellation) where T : Object
+    {
+        var locatorArray = locators.ToArray();
+        var positions = new Vector3[locatorArray.Length];
+        var rotations = new Quaternion[locatorArray.Length];
+
+        for (var i = 0; i < locatorArray.Length; i++)
+        {
+            locatorArray[i].transform.GetPositionAndRotation(out positions[i], out rotations[i]);
+        }
+
+        return await Object.InstantiateAsync(prefab, locatorArray.Length, null,
+            new ReadOnlySpan<Vector3>(positions), new ReadOnlySpan<Quaternion>(rotations), cancellation);
     }
 
     public class Result
     {
-        public List<AircraftBehaviour> EnemyAircrafts = new();
+        public IEnumerable<AircraftBehaviour> EnemyAircrafts;
         public AircraftBehaviour PlayerAircraft;
     }
 }
