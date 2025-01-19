@@ -40,6 +40,29 @@ namespace Behaviour
             _onFire.Dispose();
         }
 
+        public async UniTask LoadModelAsync(AircraftModel modelPrefab, CancellationToken cancellation)
+        {
+            if (_model is not null)
+            {
+                Destroy(_model.gameObject);
+                _model = null;
+            }
+
+            transform.GetPositionAndRotation(out var position, out var rotation);
+            _model = await Utility.InstantiateAsync(modelPrefab, position, rotation, transform, cancellation);
+        }
+
+        public void Ready()
+        {
+            Movement.enabled = true;
+            _rigidbody.isKinematic = false;
+        }
+
+        public void Fire(bool active)
+        {
+            _fire = active;
+        }
+
         private void UpdatePropeller()
         {
             if (_model is null)
@@ -68,29 +91,6 @@ namespace Behaviour
             var gun = _model.Guns[_nextGunIndex++];
             _nextGunIndex %= _model.Guns.Count;
             _onFire.OnNext(gun);
-        }
-
-        public async UniTask LoadModelAsync(AircraftModel modelPrefab, CancellationToken cancellation)
-        {
-            if (_model is not null)
-            {
-                Destroy(_model.gameObject);
-                _model = null;
-            }
-
-            transform.GetPositionAndRotation(out var position, out var rotation);
-            _model = await Utility.InstantiateAsync(modelPrefab, position, rotation, transform, cancellation);
-        }
-
-        public void Ready()
-        {
-            Movement.enabled = true;
-            _rigidbody.isKinematic = false;
-        }
-
-        public void Fire(bool active)
-        {
-            _fire = active;
         }
     }
 }
