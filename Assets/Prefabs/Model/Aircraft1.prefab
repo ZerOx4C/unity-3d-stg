@@ -611,6 +611,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3938141094338436614}
+  - component: {fileID: 1906575247933444022}
   - component: {fileID: 1811388083540428457}
   - component: {fileID: 7770715810926795401}
   m_Layer: 0
@@ -635,6 +636,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2093771170908534057}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1906575247933444022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3449679241901691008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72207d7f7d7f65d44b830c2426f12949, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flags: 1
 --- !u!33 &1811388083540428457
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -780,6 +794,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1351198540779645280}
+  - component: {fileID: 2431320263583883509}
   - component: {fileID: 1385130664126934347}
   - component: {fileID: 272419230985081769}
   m_Layer: 0
@@ -804,6 +819,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2093771170908534057}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2431320263583883509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5275345763827066586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72207d7f7d7f65d44b830c2426f12949, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flags: 1
 --- !u!33 &1385130664126934347
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1210,6 +1238,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8225922728781894325}
+  - component: {fileID: 4223079587412113253}
   m_Layer: 0
   m_Name: PropellerWings
   m_TagString: Untagged
@@ -1235,6 +1264,19 @@ Transform:
   - {fileID: 7227809628462041407}
   m_Father: {fileID: 2093771170908534057}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4223079587412113253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7982989436624832800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72207d7f7d7f65d44b830c2426f12949, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flags: 2
 --- !u!1 &9181042627889376744
 GameObject:
   m_ObjectHideFlags: 0
