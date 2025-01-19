@@ -698,6 +698,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2093771170908534057}
   - component: {fileID: 5520668473038070894}
+  - component: {fileID: 6331625549027247271}
   m_Layer: 0
   m_Name: Aircraft1
   m_TagString: Untagged
@@ -753,6 +754,20 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 2
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6331625549027247271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3498763596721585568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96ccf6e11e25b684792d227113b63a36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  propellers:
+  - {fileID: 8225922728781894325}
 --- !u!1 &5275345763827066586
 GameObject:
   m_ObjectHideFlags: 0

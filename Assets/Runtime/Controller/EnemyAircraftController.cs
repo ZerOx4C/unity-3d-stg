@@ -23,28 +23,28 @@ namespace Controller
 
             _actionQueue.Enqueue((3, () =>
             {
-                Aircraft.Movement.Pitch(0);
-                Aircraft.Movement.Roll(1);
+                Aircraft.Movement.SetPitch(0);
+                Aircraft.Movement.SetRoll(1);
             }));
             _actionQueue.Enqueue((3, () =>
             {
-                Aircraft.Movement.Pitch(1);
-                Aircraft.Movement.Roll(0);
+                Aircraft.Movement.SetPitch(1);
+                Aircraft.Movement.SetRoll(0);
             }));
             _actionQueue.Enqueue((6, () =>
             {
-                Aircraft.Movement.Pitch(0);
-                Aircraft.Movement.Roll(-1);
+                Aircraft.Movement.SetPitch(0);
+                Aircraft.Movement.SetRoll(-1);
             }));
             _actionQueue.Enqueue((3, () =>
             {
-                Aircraft.Movement.Pitch(1);
-                Aircraft.Movement.Roll(0);
+                Aircraft.Movement.SetPitch(1);
+                Aircraft.Movement.SetRoll(0);
             }));
             _actionQueue.Enqueue((3, () =>
             {
-                Aircraft.Movement.Pitch(0);
-                Aircraft.Movement.Roll(1);
+                Aircraft.Movement.SetPitch(0);
+                Aircraft.Movement.SetRoll(1);
             }));
         }
 

@@ -2,24 +2,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Model;
 using UnityEngine;
 
 public class ModelLoader : MonoBehaviour
 {
     private List<Transform> _guns;
-    private GameObject _model;
 
+    public AircraftModel Model { get; private set; }
     public IReadOnlyList<Transform> Guns => _guns;
 
-    public async UniTask LoadAsync(GameObject prefab, CancellationToken cancellation)
+    public async UniTask LoadAsync(AircraftModel modelPrefab, CancellationToken cancellation)
     {
-        if (_model is null)
+        if (Model is not null)
         {
-            Destroy(_model);
-            _model = null;
+            Destroy(Model);
+            Model = null;
         }
 
-        _model = await Utility.InstantiateAsync(prefab,
+        Model = await Utility.InstantiateAsync(modelPrefab,
             transform.position, transform.rotation, transform, cancellation);
 
         _guns = GameObject.FindGameObjectsWithTag("Gun")

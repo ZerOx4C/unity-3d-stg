@@ -32,19 +32,19 @@ namespace Controller
             base.Initialize();
 
             _aircraftInput.Pitch.OnProgress.Merge(_aircraftInput.Pitch.OnEnded)
-                .Subscribe(c => Aircraft.Movement.Pitch(c.ReadValue<float>()))
+                .Subscribe(c => Aircraft.Movement.SetPitch(c.ReadValue<float>()))
                 .AddTo(_disposables);
 
             _aircraftInput.Roll.OnProgress.Merge(_aircraftInput.Roll.OnEnded)
-                .Subscribe(c => Aircraft.Movement.Roll(c.ReadValue<float>()))
+                .Subscribe(c => Aircraft.Movement.SetRoll(c.ReadValue<float>()))
                 .AddTo(_disposables);
 
             _aircraftInput.Yaw.OnProgress.Merge(_aircraftInput.Yaw.OnEnded)
-                .Subscribe(c => Aircraft.Movement.Yaw(c.ReadValue<float>()))
+                .Subscribe(c => Aircraft.Movement.SetYaw(c.ReadValue<float>()))
                 .AddTo(_disposables);
 
             _aircraftInput.Throttle.OnProgress.Merge(_aircraftInput.Throttle.OnEnded)
-                .Subscribe(c => Aircraft.Movement.Throttle(c.ReadValue<float>()))
+                .Subscribe(c => Aircraft.Movement.SetThrottle(c.ReadValue<float>()))
                 .AddTo(_disposables);
 
             _aircraftInput.Fire.OnBegan

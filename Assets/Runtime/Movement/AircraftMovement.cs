@@ -12,57 +12,58 @@ namespace Movement
         public float rollFactor = 1;
         public float yawFactor = 1;
 
-        private float _pitch;
         private Rigidbody _rigidbody;
-        private float _roll;
-        private float _throttle;
-        private float _yaw;
+
+        public float Pitch { get; private set; }
+        public float Roll { get; private set; }
+        public float Yaw { get; private set; }
+        public float Throttle { get; private set; }
 
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
 
-            Pitch(0);
-            Roll(0);
-            Yaw(0);
-            Throttle(0);
+            SetPitch(0);
+            SetRoll(0);
+            SetYaw(0);
+            SetThrottle(0);
         }
 
         private void FixedUpdate()
         {
             var dt = Time.fixedDeltaTime;
             var velocity = _rigidbody.linearVelocity;
-            velocity += dt * _throttle * throttleAcceleration * transform.forward;
+            velocity += dt * Throttle * throttleAcceleration * transform.forward;
             velocity += dt * CalcLift(velocity, transform, liftFactor);
             velocity += dt * CalcDrag(velocity, transform, minDragFactor, maxDragFactor);
             _rigidbody.linearVelocity = velocity;
 
             _rigidbody.angularVelocity = Time.fixedDeltaTime *
-                                         (_roll * rollFactor * -transform.forward +
-                                          _pitch * pitchFactor * -transform.right +
-                                          _yaw * yawFactor * transform.up);
+                                         (Roll * rollFactor * -transform.forward +
+                                          Pitch * pitchFactor * -transform.right +
+                                          Yaw * yawFactor * transform.up);
         }
 
         public Vector3 LinearVelocity => _rigidbody.linearVelocity;
 
-        public void Pitch(float input)
+        public void SetPitch(float input)
         {
-            _pitch = Mathf.Clamp(input, -1, 1);
+            Pitch = Mathf.Clamp(input, -1, 1);
         }
 
-        public void Roll(float input)
+        public void SetRoll(float input)
         {
-            _roll = Mathf.Clamp(input, -1, 1);
+            Roll = Mathf.Clamp(input, -1, 1);
         }
 
-        public void Yaw(float input)
+        public void SetYaw(float input)
         {
-            _yaw = Mathf.Clamp(input, -1, 1);
+            Yaw = Mathf.Clamp(input, -1, 1);
         }
 
-        public void Throttle(float input)
+        public void SetThrottle(float input)
         {
-            _throttle = 0.5f + 0.5f * Mathf.Clamp(input, -1, 1);
+            Throttle = 0.5f + 0.5f * Mathf.Clamp(input, -1, 1);
         }
 
         private static Vector3 CalcLift(Vector3 velocity, Transform transform, float liftFactor)

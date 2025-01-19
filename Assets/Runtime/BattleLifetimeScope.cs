@@ -1,6 +1,7 @@
 using Behaviour;
 using Controller;
 using Input;
+using Model;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -14,7 +15,7 @@ public class BattleLifetimeScope : LifetimeScope
     public AircraftBehaviour aircraftBehaviourPrefab;
     public BulletBehaviour bulletPrefab;
     public GameObject stagePrefab;
-    public GameObject aircraftModelPrefab;
+    public AircraftModel playerAircraftModelPrefab;
 
     protected override void Awake()
     {
@@ -39,7 +40,7 @@ public class BattleLifetimeScope : LifetimeScope
 
         builder.RegisterEntryPoint<BattleEntryPoint>()
             .WithParameter(aircraftBehaviourPrefab)
-            .WithParameter("aircraftModelPrefab", aircraftModelPrefab)
+            .WithParameter(playerAircraftModelPrefab)
             .WithParameter("stagePrefab", stagePrefab)
             .WithParameter(bulletPrefab);
     }

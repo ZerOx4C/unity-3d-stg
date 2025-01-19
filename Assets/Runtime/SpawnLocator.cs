@@ -1,9 +1,10 @@
+using Model;
 using UnityEngine;
 
 public class SpawnLocator : MonoBehaviour
 {
     public bool isPlayer;
-    public GameObject modelPrefab;
+    public AircraftModel modelPrefab;
 
 #if UNITY_EDITOR
     private static Mesh _gizmoMesh;

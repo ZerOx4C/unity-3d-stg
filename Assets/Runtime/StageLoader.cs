@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Behaviour;
 using Cysharp.Threading.Tasks;
+using Model;
 using UnityEngine;
 using VContainer;
 using Object = UnityEngine.Object;
@@ -10,7 +11,7 @@ using Object = UnityEngine.Object;
 public class StageLoader
 {
     private readonly AircraftBehaviour _aircraftBehaviourPrefab;
-    private GameObject _playerAircraftModelPrefab;
+    private AircraftModel _playerAircraftModelPrefab;
 
     [Inject]
     public StageLoader(AircraftBehaviour aircraftBehaviourPrefab)
@@ -18,7 +19,7 @@ public class StageLoader
         _aircraftBehaviourPrefab = aircraftBehaviourPrefab;
     }
 
-    public void SetPlayerAircraftModelPrefab(GameObject aircraftModelPrefab)
+    public void SetPlayerAircraftModelPrefab(AircraftModel aircraftModelPrefab)
     {
         _playerAircraftModelPrefab = aircraftModelPrefab;
     }

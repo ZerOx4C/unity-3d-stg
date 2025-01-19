@@ -1,3 +1,4 @@
+using Model;
 using Movement;
 using R3;
 using UnityEngine;
@@ -29,6 +30,27 @@ namespace Behaviour
 
         private void Update()
         {
+            UpdatePropeller();
+            UpdateFire();
+        }
+
+        private void OnDestroy()
+        {
+            _onFire.Dispose();
+        }
+
+        private void UpdatePropeller()
+        {
+            if (Loader.Model is null)
+            {
+                return;
+            }
+
+            Loader.Model.PropellerSpeed = 3600 * Movement.Throttle;
+        }
+
+        private void UpdateFire()
+        {
             if (0 < _fireCooldown)
             {
                 _fireCooldown -= Time.deltaTime;
@@ -45,11 +67,6 @@ namespace Behaviour
             var gun = Loader.Guns[_nextGunIndex++];
             _nextGunIndex %= Loader.Guns.Count;
             _onFire.OnNext(gun);
-        }
-
-        private void OnDestroy()
-        {
-            _onFire.Dispose();
         }
 
         public void Ready()
