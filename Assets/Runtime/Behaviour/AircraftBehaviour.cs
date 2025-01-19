@@ -1,3 +1,5 @@
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using Model;
 using Movement;
 using R3;
@@ -9,18 +11,17 @@ namespace Behaviour
     {
         private bool _fire;
         private float _fireCooldown;
+        private AircraftModel _model;
         private int _nextGunIndex;
         private Subject<Transform> _onFire;
         private Rigidbody _rigidbody;
 
         public AircraftMovement Movement { get; private set; }
-        public ModelLoader Loader { get; private set; }
         public Observable<Transform> OnFire => _onFire;
 
         private void Awake()
         {
             Movement = GetComponent<AircraftMovement>();
-            Loader = GetComponent<ModelLoader>();
             _rigidbody = GetComponent<Rigidbody>();
             _onFire = new Subject<Transform>();
 
@@ -41,12 +42,12 @@ namespace Behaviour
 
         private void UpdatePropeller()
         {
-            if (Loader.Model is null)
+            if (_model is null)
             {
                 return;
             }
 
-            Loader.Model.PropellerSpeed = 3600 * Movement.Throttle;
+            _model.PropellerSpeed = 3600 * Movement.Throttle;
         }
 
         private void UpdateFire()
@@ -64,9 +65,21 @@ namespace Behaviour
 
             _fireCooldown = 0.05f;
 
-            var gun = Loader.Guns[_nextGunIndex++];
-            _nextGunIndex %= Loader.Guns.Count;
+            var gun = _model.Guns[_nextGunIndex++];
+            _nextGunIndex %= _model.Guns.Count;
             _onFire.OnNext(gun);
+        }
+
+        public async UniTask LoadModelAsync(AircraftModel modelPrefab, CancellationToken cancellation)
+        {
+            if (_model is not null)
+            {
+                Destroy(_model.gameObject);
+                _model = null;
+            }
+
+            transform.GetPositionAndRotation(out var position, out var rotation);
+            _model = await Utility.InstantiateAsync(modelPrefab, position, rotation, transform, cancellation);
         }
 
         public void Ready()

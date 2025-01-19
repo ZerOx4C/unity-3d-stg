@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3202820804106754868}
   - component: {fileID: 7879260481791334755}
   - component: {fileID: 893249496314259743}
-  - component: {fileID: 222195991947196098}
   - component: {fileID: 6911163885930697151}
   m_Layer: 0
   m_Name: Aircraft
@@ -66,18 +65,6 @@ MonoBehaviour:
   pitchFactor: 10
   rollFactor: 20
   yawFactor: 5
---- !u!114 &222195991947196098
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8592757194668446145}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9661d796f8843f193d497571e4157aa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &6911163885930697151
 Rigidbody:
   m_ObjectHideFlags: 0

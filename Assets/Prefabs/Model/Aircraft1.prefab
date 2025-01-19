@@ -766,6 +766,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96ccf6e11e25b684792d227113b63a36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guns:
+  - {fileID: 1351198540779645280}
+  - {fileID: 3938141094338436614}
   propellers:
   - {fileID: 8225922728781894325}
 --- !u!1 &5275345763827066586

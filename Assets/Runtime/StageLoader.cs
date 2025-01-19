@@ -51,12 +51,12 @@ public class StageLoader
 
             if (locator.isPlayer)
             {
-                loadTasks[i] = aircraft.Loader.LoadAsync(_playerAircraftModelPrefab, cancellation);
+                loadTasks[i] = aircraft.LoadModelAsync(_playerAircraftModelPrefab, cancellation);
                 result.PlayerAircraft = aircraft;
             }
             else
             {
-                loadTasks[i] = aircraft.Loader.LoadAsync(locator.modelPrefab, cancellation);
+                loadTasks[i] = aircraft.LoadModelAsync(locator.modelPrefab, cancellation);
                 result.EnemyAircrafts.Add(aircraft);
             }
         }

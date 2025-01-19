@@ -5,8 +5,10 @@ namespace Model
 {
     public class AircraftModel : MonoBehaviour
     {
-        public List<Transform> propellers;
+        [SerializeField] private List<Transform> guns;
+        [SerializeField] private List<Transform> propellers;
 
+        public IReadOnlyList<Transform> Guns => guns;
         public float PropellerSpeed { get; set; }
 
         private void Update()
