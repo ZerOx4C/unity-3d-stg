@@ -10,7 +10,8 @@ namespace Model
     {
         None = 0,
         Gun = 1 << 0,
-        Propeller = 1 << 1
+        Propeller = 1 << 1,
+        Fragment = 1 << 2
     }
 
     public class ModelPartTag : MonoBehaviour

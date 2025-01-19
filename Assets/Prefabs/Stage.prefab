@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4400002042103461841}
   - component: {fileID: 1567879585068291869}
   m_Layer: 0
-  m_Name: Enemy (1)
+  m_Name: Enemy_2
   m_TagString: Locator
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -198,6 +198,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d47e6108088429985995472287919d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &4899448147388641983
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6619605699828527030}
+  - component: {fileID: 3668016488330853581}
+  m_Layer: 0
+  m_Name: Target
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6619605699828527030
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4899448147388641983}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 150, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3085551453606233812}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3668016488330853581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4899448147388641983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39ca0e63c1378d84fbbb98e2dae8dcbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7413828651917765323
 GameObject:
   m_ObjectHideFlags: 0
@@ -209,7 +253,7 @@ GameObject:
   - component: {fileID: 5941618091316347171}
   - component: {fileID: 3443382640929184595}
   m_Layer: 0
-  m_Name: Enemy (2)
+  m_Name: Enemy_3
   m_TagString: Locator
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -278,6 +322,7 @@ Transform:
   - {fileID: 4557257797678487791}
   - {fileID: 4400002042103461841}
   - {fileID: 5941618091316347171}
+  - {fileID: 6619605699828527030}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9178224638344324190
@@ -297,6 +342,8 @@ MonoBehaviour:
   - {fileID: 6951093119109628986}
   - {fileID: 1567879585068291869}
   - {fileID: 3443382640929184595}
+  targetLocators:
+  - {fileID: 3668016488330853581}
 --- !u!1 &8609120966759157967
 GameObject:
   m_ObjectHideFlags: 0
@@ -308,7 +355,7 @@ GameObject:
   - component: {fileID: 4557257797678487791}
   - component: {fileID: 6951093119109628986}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Enemy_1
   m_TagString: Locator
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

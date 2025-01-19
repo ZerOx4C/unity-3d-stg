@@ -54,3 +54,4 @@ MonoBehaviour:
   bulletPrefab: {fileID: 905725347599717483, guid: f8b4f0623d6043949a74ed9bde68b9e5, type: 3}
   stageLayoutPrefab: {fileID: 9178224638344324190, guid: 05b77b211694f2345ac2af1bc582bfaa, type: 3}
   playerAircraftModelPrefab: {fileID: 6331625549027247271, guid: 6f4304c0e26c0a649a87baea24a268c8, type: 3}
+  targetModelPrefab: {fileID: 7236745177804096243, guid: f419084ede3b6a54ca8e88dc45754972, type: 3}

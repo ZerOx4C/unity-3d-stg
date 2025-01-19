@@ -13,12 +13,16 @@ using Object = UnityEngine.Object;
 public class StageLoader
 {
     private readonly AircraftBehaviour _aircraftBehaviourPrefab;
+    private readonly TargetModel _targetModelPrefab;
     private AircraftModel _playerAircraftModelPrefab;
 
     [Inject]
-    public StageLoader(AircraftBehaviour aircraftBehaviourPrefab)
+    public StageLoader(
+        AircraftBehaviour aircraftBehaviourPrefab,
+        TargetModel targetModelPrefab)
     {
         _aircraftBehaviourPrefab = aircraftBehaviourPrefab;
+        _targetModelPrefab = targetModelPrefab;
     }
 
     public void SetPlayerAircraftModelPrefab(AircraftModel aircraftModelPrefab)
@@ -33,6 +37,7 @@ public class StageLoader
         var stageLayout = await Utility.InstantiateAsync(stageLayoutPrefab, cancellationToken: cancellation);
         var playerAircraft = (await InstantiateWithLocatorAsync(_aircraftBehaviourPrefab, new[] { stageLayout.PlayerLocator }, cancellation))[0];
         var enemyAircrafts = await InstantiateWithLocatorAsync(_aircraftBehaviourPrefab, stageLayout.EnemyAircraftLocators, cancellation);
+        await InstantiateWithLocatorAsync(_targetModelPrefab, stageLayout.TargetLocators, cancellation);
 
         var loadTasks = new Stack<UniTask>();
         loadTasks.Push(playerAircraft.LoadModelAsync(_playerAircraftModelPrefab, cancellation));

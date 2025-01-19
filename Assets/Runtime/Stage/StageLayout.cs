@@ -10,9 +10,11 @@ namespace Stage
     {
         [SerializeField] private PlayerLocator playerLocator;
         [SerializeField] private EnemyAircraftLocator[] enemyAircraftLocators;
+        [SerializeField] private TargetLocator[] targetLocators;
 
         public PlayerLocator PlayerLocator => playerLocator;
         public IReadOnlyList<EnemyAircraftLocator> EnemyAircraftLocators => enemyAircraftLocators;
+        public IReadOnlyList<TargetLocator> TargetLocators => targetLocators;
 
 #if UNITY_EDITOR
         [ContextMenu("Setup")]
@@ -20,6 +22,7 @@ namespace Stage
         {
             playerLocator = transform.GetComponentInChildren<PlayerLocator>();
             enemyAircraftLocators = transform.GetComponentsInChildren<EnemyAircraftLocator>();
+            targetLocators = transform.GetComponentsInChildren<TargetLocator>();
             EditorUtility.SetDirty(this);
         }
 #endif
