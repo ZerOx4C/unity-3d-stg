@@ -5,6 +5,7 @@
 /Builds/
 /Logs/
 /UserSettings/
+/Recordings/
 
 *.csproj
 *.sln
