@@ -49,8 +49,11 @@ namespace Behaviour
                 _model = null;
             }
 
-            transform.GetPositionAndRotation(out var position, out var rotation);
-            _model = await MiscUtility.InstantiateAsync(modelPrefab, position, rotation, transform, cancellation);
+            _model = await Instantiator.Create(modelPrefab)
+                .SetParent(transform)
+                .SetTransforms(transform)
+                .InstantiateAsync(cancellation)
+                .First();
         }
 
         public void Ready()
