@@ -1,4 +1,5 @@
 using UnityEngine;
+using Utility;
 
 namespace Stage
 {
@@ -8,7 +9,7 @@ namespace Stage
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.cyan;
-            Gizmos.DrawMesh(Utility.CreateGizmoAircraftMesh(), transform.position, transform.rotation);
+            Gizmos.DrawMesh(MiscUtility.CreateGizmoAircraftMesh(), transform.position, transform.rotation);
         }
 #endif
     }

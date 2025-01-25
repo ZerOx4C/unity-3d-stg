@@ -4,6 +4,7 @@ using Model;
 using Movement;
 using R3;
 using UnityEngine;
+using Utility;
 
 namespace Behaviour
 {
@@ -49,7 +50,7 @@ namespace Behaviour
             }
 
             transform.GetPositionAndRotation(out var position, out var rotation);
-            _model = await Utility.InstantiateAsync(modelPrefab, position, rotation, transform, cancellation);
+            _model = await MiscUtility.InstantiateAsync(modelPrefab, position, rotation, transform, cancellation);
         }
 
         public void Ready()

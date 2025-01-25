@@ -2,6 +2,7 @@ using System.Threading;
 using Behaviour;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Utility;
 using VContainer;
 
 namespace Controller
@@ -19,7 +20,7 @@ namespace Controller
 
         public async UniTask ReadyAsync(CancellationToken cancellation)
         {
-            _cameraBehaviour = await Utility.InstantiateAsync(_cameraBehaviourPrefab, cancellationToken: cancellation);
+            _cameraBehaviour = await MiscUtility.InstantiateAsync(_cameraBehaviourPrefab, cancellationToken: cancellation);
         }
 
         public void SetFollowTarget(Transform target)
