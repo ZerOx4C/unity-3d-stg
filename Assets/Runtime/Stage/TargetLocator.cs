@@ -18,7 +18,7 @@ namespace Stage
                     new(-4f, -4f, 0),
                     new(-4f, 4f, 0),
                     new(4f, 4f, 0),
-                    new(4f, -4f, 0)
+                    new(4f, -4f, 0),
                 },
                 triangles = new[]
                 {
@@ -38,8 +38,8 @@ namespace Stage
                     3, 4, 7,
                     4, 3, 0,
                     0, 5, 4,
-                    5, 0, 1
-                }
+                    5, 0, 1,
+                },
             };
             mesh.RecalculateNormals();
             return mesh;

@@ -53,7 +53,7 @@ public class StageLoader
         return new Result
         {
             EnemyAircrafts = enemyAircrafts,
-            PlayerAircraft = playerAircraft
+            PlayerAircraft = playerAircraft,
         };
     }
 
