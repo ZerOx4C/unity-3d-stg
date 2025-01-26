@@ -1,19 +1,20 @@
 using System;
 using System.Threading;
 using Behaviour;
+using Controller;
 using Cysharp.Threading.Tasks;
 using R3;
 using VContainer;
 
-namespace Controller
+namespace Presenter
 {
-    public class TargetController : IDisposable
+    public class TargetPresenter : IDisposable
     {
         private readonly CompositeDisposable _disposables = new();
         private readonly FragmentController _fragmentController;
 
         [Inject]
-        public TargetController(FragmentController fragmentController)
+        public TargetPresenter(FragmentController fragmentController)
         {
             _fragmentController = fragmentController;
         }

@@ -1,20 +1,21 @@
 using System;
 using System.Threading;
 using Behaviour;
+using Controller;
 using Cysharp.Threading.Tasks;
 using R3;
 using VContainer;
 
-namespace Controller
+namespace Presenter
 {
-    public class AircraftController : IDisposable
+    public class AircraftPresenter : IDisposable
     {
         private readonly CompositeDisposable _disposables = new();
         private readonly FireController _fireController;
         private readonly FragmentController _fragmentController;
 
         [Inject]
-        public AircraftController(
+        public AircraftPresenter(
             FireController fireController,
             FragmentController fragmentController)
         {

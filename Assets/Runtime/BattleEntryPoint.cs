@@ -6,6 +6,7 @@ using Controller;
 using Cysharp.Threading.Tasks;
 using Input;
 using Model;
+using Presenter;
 using R3;
 using Stage;
 using UnityEngine;
@@ -14,8 +15,8 @@ using VContainer.Unity;
 
 public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
 {
-    private readonly AircraftController _aircraftController;
     private readonly AircraftInput _aircraftInput;
+    private readonly AircraftPresenter _aircraftPresenter;
     private readonly BattleCameraController _cameraController;
     private readonly CollisionController _collisionController;
     private readonly CompositeDisposable _disposables = new();
@@ -25,14 +26,14 @@ public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
     private readonly AircraftModel _playerAircraftModelPrefab;
     private readonly StageLayout _stageLayoutPrefab;
     private readonly StageLoader _stageLoader;
-    private readonly TargetController _targetController;
+    private readonly TargetPresenter _targetPresenter;
     private bool _initialized;
     private AircraftBehaviour _playerAircraft;
     private PlayerAircraftController _playerAircraftController;
 
     [Inject]
     public BattleEntryPoint(
-        AircraftController aircraftController,
+        AircraftPresenter aircraftPresenter,
         AircraftModel playerAircraftModelPrefab,
         BattleCameraController cameraController,
         CollisionController collisionController,
@@ -41,9 +42,9 @@ public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
         AircraftInput aircraftInput,
         StageLayout stageLayoutPrefab,
         StageLoader stageLoader,
-        TargetController targetController)
+        TargetPresenter targetPresenter)
     {
-        _aircraftController = aircraftController;
+        _aircraftPresenter = aircraftPresenter;
         _playerAircraftModelPrefab = playerAircraftModelPrefab;
         _cameraController = cameraController;
         _collisionController = collisionController;
@@ -52,7 +53,7 @@ public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
         _aircraftInput = aircraftInput;
         _stageLayoutPrefab = stageLayoutPrefab;
         _stageLoader = stageLoader;
-        _targetController = targetController;
+        _targetPresenter = targetPresenter;
     }
 
     public async UniTask StartAsync(CancellationToken cancellation)
@@ -66,13 +67,13 @@ public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
         var playerAircraft = loadResult.PlayerAircraft;
         _playerAircraftController = new PlayerAircraftController(_aircraftInput);
         _playerAircraftController.Initialize(playerAircraft);
-        _aircraftController.Add(playerAircraft);
+        _aircraftPresenter.Add(playerAircraft);
         playerAircraft.Ready();
 
         foreach (var aircraft in loadResult.EnemyAircrafts)
         {
             var controller = new EnemyAircraftController(aircraft);
-            _aircraftController.Add(aircraft);
+            _aircraftPresenter.Add(aircraft);
             aircraft.Ready();
 
             _enemyAircraftControllers.Add(controller);
@@ -80,7 +81,7 @@ public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
 
         foreach (var target in loadResult.Targets)
         {
-            _targetController.Add(target);
+            _targetPresenter.Add(target);
         }
 
         await _cameraController.ReadyAsync(cancellation);
