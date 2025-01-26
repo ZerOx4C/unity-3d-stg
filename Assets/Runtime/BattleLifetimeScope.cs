@@ -16,7 +16,7 @@ public class BattleLifetimeScope : LifetimeScope
     public BulletBehaviour bulletPrefab;
     public StageLayout stageLayoutPrefab;
     public AircraftModel playerAircraftModelPrefab;
-    public TargetModel targetModelPrefab;
+    public TargetBehaviour targetBehaviourPrefab;
 
     protected override void Awake()
     {
@@ -35,12 +35,13 @@ public class BattleLifetimeScope : LifetimeScope
         builder.RegisterInstance(bulletPrefab);
         builder.RegisterInstance(stageLayoutPrefab);
         builder.RegisterInstance(playerAircraftModelPrefab);
-        builder.RegisterInstance(targetModelPrefab);
+        builder.RegisterInstance(targetBehaviourPrefab);
 
         builder.Register<AircraftInput>(Lifetime.Singleton);
         builder.Register<FireController>(Lifetime.Singleton);
         builder.Register<BattleCameraController>(Lifetime.Singleton);
         builder.Register<PlayerAircraftController>(Lifetime.Singleton);
+        builder.Register<TargetController>(Lifetime.Singleton);
         builder.Register<CollisionController>(Lifetime.Singleton);
         builder.Register<StageLoader>(Lifetime.Singleton);
         builder.RegisterEntryPoint<BattleEntryPoint>();

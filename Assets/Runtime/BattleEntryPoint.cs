@@ -23,6 +23,7 @@ public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
     private readonly AircraftModel _playerAircraftModelPrefab;
     private readonly StageLayout _stageLayoutPrefab;
     private readonly StageLoader _stageLoader;
+    private readonly TargetController _targetController;
     private bool _initialized;
     private AircraftBehaviour _playerAircraft;
     private PlayerAircraftController _playerAircraftController;
@@ -35,7 +36,8 @@ public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
         FireController fireController,
         AircraftInput aircraftInput,
         StageLayout stageLayoutPrefab,
-        StageLoader stageLoader)
+        StageLoader stageLoader,
+        TargetController targetController)
     {
         _playerAircraftModelPrefab = playerAircraftModelPrefab;
         _cameraController = cameraController;
@@ -44,6 +46,7 @@ public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
         _aircraftInput = aircraftInput;
         _stageLayoutPrefab = stageLayoutPrefab;
         _stageLoader = stageLoader;
+        _targetController = targetController;
     }
 
     public async UniTask StartAsync(CancellationToken cancellation)
@@ -66,6 +69,11 @@ public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
 
             _enemyAircraftControllers.Add(controller);
             _disposables.Add(controller);
+        }
+
+        foreach (var target in loadResult.Targets)
+        {
+            _targetController.Add(target);
         }
 
         await _cameraController.ReadyAsync(cancellation);

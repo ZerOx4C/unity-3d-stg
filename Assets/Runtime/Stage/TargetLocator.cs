@@ -1,9 +1,12 @@
+using Model;
 using UnityEngine;
 
 namespace Stage
 {
     public class TargetLocator : MonoBehaviour
     {
+        public TargetModel modelPrefab;
+
 #if UNITY_EDITOR
         private static Mesh CreateGizmoTargetMesh()
         {

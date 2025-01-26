@@ -14,16 +14,16 @@ using Object = UnityEngine.Object;
 public class StageLoader
 {
     private readonly AircraftBehaviour _aircraftBehaviourPrefab;
-    private readonly TargetModel _targetModelPrefab;
+    private readonly TargetBehaviour _targetBehaviourPrefab;
     private AircraftModel _playerAircraftModelPrefab;
 
     [Inject]
     public StageLoader(
         AircraftBehaviour aircraftBehaviourPrefab,
-        TargetModel targetModelPrefab)
+        TargetBehaviour targetBehaviourPrefab)
     {
         _aircraftBehaviourPrefab = aircraftBehaviourPrefab;
-        _targetModelPrefab = targetModelPrefab;
+        _targetBehaviourPrefab = targetBehaviourPrefab;
     }
 
     public void SetPlayerAircraftModelPrefab(AircraftModel aircraftModelPrefab)
@@ -38,7 +38,7 @@ public class StageLoader
 
         var playerAircraft = (await InstantiateWithLocatorAsync(_aircraftBehaviourPrefab, new[] { stageLayout.PlayerLocator }, cancellation))[0];
         var enemyAircrafts = await InstantiateWithLocatorAsync(_aircraftBehaviourPrefab, stageLayout.EnemyAircraftLocators, cancellation);
-        await InstantiateWithLocatorAsync(_targetModelPrefab, stageLayout.TargetLocators, cancellation);
+        var targets = await InstantiateWithLocatorAsync(_targetBehaviourPrefab, stageLayout.TargetLocators, cancellation);
 
         var loadTasks = new Stack<UniTask>();
         loadTasks.Push(playerAircraft.LoadModelAsync(_playerAircraftModelPrefab, cancellation));
@@ -50,11 +50,19 @@ public class StageLoader
             loadTasks.Push(aircraft.LoadModelAsync(locator.modelPrefab, cancellation));
         }
 
+        for (var i = 0; i < targets.Length; i++)
+        {
+            var target = targets[i];
+            var locator = stageLayout.TargetLocators[i];
+            loadTasks.Push(target.LoadModelAsync(locator.modelPrefab, cancellation));
+        }
+
         await UniTask.WhenAll(loadTasks);
         return new Result
         {
             EnemyAircrafts = enemyAircrafts,
             PlayerAircraft = playerAircraft,
+            Targets = targets,
         };
     }
 
@@ -78,5 +86,6 @@ public class StageLoader
     {
         public IEnumerable<AircraftBehaviour> EnemyAircrafts;
         public AircraftBehaviour PlayerAircraft;
+        public IEnumerable<TargetBehaviour> Targets;
     }
 }

@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Behaviour;
-using Model;
 using R3;
 using R3.Triggers;
 using UnityEngine;
 using VContainer;
-using Object = UnityEngine.Object;
 
 namespace Controller
 {
@@ -14,7 +12,7 @@ namespace Controller
     {
         private readonly Queue<(BulletBehaviour bullet, AircraftBehaviour aircraft)> _aircraftHitQueue = new();
         private readonly CompositeDisposable _disposables = new();
-        private readonly Queue<(BulletBehaviour bullet, TargetModel target)> _targetHitQueue = new();
+        private readonly Queue<(BulletBehaviour bullet, TargetBehaviour target)> _targetHitQueue = new();
 
         [Inject]
         public CollisionController()
@@ -37,7 +35,7 @@ namespace Controller
         {
             var releaseBullets = new HashSet<BulletBehaviour>();
             var deadAircrafts = new HashSet<AircraftBehaviour>();
-            var deadTargets = new HashSet<TargetModel>();
+            var deadTargets = new HashSet<TargetBehaviour>();
 
             while (_aircraftHitQueue.TryDequeue(out var pair))
             {
@@ -68,7 +66,7 @@ namespace Controller
 
             foreach (var target in deadTargets)
             {
-                Object.Destroy(target.gameObject);
+                target.Damage();
             }
         }
 
@@ -82,7 +80,7 @@ namespace Controller
             {
                 _aircraftHitQueue.Enqueue((bullet, aircraft));
             }
-            else if (go.TryGetComponent(out TargetModel target))
+            else if (go.TryGetComponent(out TargetBehaviour target))
             {
                 _targetHitQueue.Enqueue((bullet, target));
             }
