@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -6,10 +5,8 @@ using Behaviour;
 using Cysharp.Threading.Tasks;
 using Model;
 using Stage;
-using UnityEngine;
 using Utility;
 using VContainer;
-using Object = UnityEngine.Object;
 
 public class StageLoader
 {
@@ -36,13 +33,24 @@ public class StageLoader
         var stageLayout = await Instantiator.Create(stageLayoutPrefab)
             .InstantiateAsync(cancellation).First;
 
-        var playerAircraft = (await InstantiateWithLocatorAsync(_aircraftBehaviourPrefab, new[] { stageLayout.PlayerLocator }, cancellation))[0];
-        var enemyAircrafts = await InstantiateWithLocatorAsync(_aircraftBehaviourPrefab, stageLayout.EnemyAircraftLocators, cancellation);
-        var targets = await InstantiateWithLocatorAsync(_targetBehaviourPrefab, stageLayout.TargetLocators, cancellation);
+        var playerAircraftTask = Instantiator.Create(_aircraftBehaviourPrefab)
+            .SetTransforms(stageLayout.PlayerLocator.transform)
+            .InstantiateAsync(cancellation).First;
+
+        var enemyAircraftsTask = Instantiator.Create(_aircraftBehaviourPrefab)
+            .SetTransforms(stageLayout.EnemyAircraftLocators.Select(l => l.transform).ToList())
+            .InstantiateAsync(cancellation).All;
+
+        var targetsTask = Instantiator.Create(_targetBehaviourPrefab)
+            .SetTransforms(stageLayout.TargetLocators.Select(l => l.transform).ToList())
+            .InstantiateAsync(cancellation).All;
 
         var loadTasks = new Stack<UniTask>();
+
+        var playerAircraft = await playerAircraftTask;
         loadTasks.Push(playerAircraft.LoadModelAsync(_playerAircraftModelPrefab, cancellation));
 
+        var enemyAircrafts = await enemyAircraftsTask;
         for (var i = 0; i < enemyAircrafts.Length; i++)
         {
             var aircraft = enemyAircrafts[i];
@@ -50,6 +58,7 @@ public class StageLoader
             loadTasks.Push(aircraft.LoadModelAsync(locator.modelPrefab, cancellation));
         }
 
+        var targets = await targetsTask;
         for (var i = 0; i < targets.Length; i++)
         {
             var target = targets[i];
@@ -64,22 +73,6 @@ public class StageLoader
             PlayerAircraft = playerAircraft,
             Targets = targets,
         };
-    }
-
-    private static async UniTask<T[]> InstantiateWithLocatorAsync<T>(T prefab, IEnumerable<MonoBehaviour> locators,
-        CancellationToken cancellation) where T : Object
-    {
-        var locatorArray = locators.ToArray();
-        var positions = new Vector3[locatorArray.Length];
-        var rotations = new Quaternion[locatorArray.Length];
-
-        for (var i = 0; i < locatorArray.Length; i++)
-        {
-            locatorArray[i].transform.GetPositionAndRotation(out positions[i], out rotations[i]);
-        }
-
-        return await Object.InstantiateAsync(prefab, locatorArray.Length, null,
-            new ReadOnlySpan<Vector3>(positions), new ReadOnlySpan<Quaternion>(rotations), cancellation);
     }
 
     public class Result
