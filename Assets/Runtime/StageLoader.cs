@@ -48,14 +48,14 @@ public class StageLoader
         var loadTasks = new Stack<UniTask>();
 
         var playerAircraft = await playerAircraftTask;
-        loadTasks.Push(playerAircraft.LoadModelAsync(_playerAircraftModelPrefab, cancellation));
+        loadTasks.Push(playerAircraft.ModelLoader.LoadAsync(_playerAircraftModelPrefab, cancellation));
 
         var enemyAircrafts = await enemyAircraftsTask;
         for (var i = 0; i < enemyAircrafts.Length; i++)
         {
             var aircraft = enemyAircrafts[i];
             var locator = stageLayout.EnemyAircraftLocators[i];
-            loadTasks.Push(aircraft.LoadModelAsync(locator.modelPrefab, cancellation));
+            loadTasks.Push(aircraft.ModelLoader.LoadAsync(locator.modelPrefab, cancellation));
         }
 
         var targets = await targetsTask;
@@ -63,7 +63,7 @@ public class StageLoader
         {
             var target = targets[i];
             var locator = stageLayout.TargetLocators[i];
-            loadTasks.Push(target.LoadModelAsync(locator.modelPrefab, cancellation));
+            loadTasks.Push(target.ModelLoader.LoadAsync(locator.modelPrefab, cancellation));
         }
 
         await UniTask.WhenAll(loadTasks);
