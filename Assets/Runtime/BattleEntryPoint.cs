@@ -15,13 +15,13 @@ using VContainer.Unity;
 public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
 {
     private readonly AircraftInput _aircraftInput;
-    private readonly BulletBehaviour _bulletPrefab;
     private readonly BattleCameraController _cameraController;
     private readonly CompositeDisposable _disposables = new();
     private readonly List<EnemyAircraftController> _enemyAircraftControllers = new();
+    private readonly FireController _fireController;
     private readonly AircraftModel _playerAircraftModelPrefab;
-    private readonly StageLoader _stageLoader;
     private readonly StageLayout _stageLayoutPrefab;
+    private readonly StageLoader _stageLoader;
     private bool _initialized;
     private AircraftBehaviour _playerAircraft;
     private PlayerAircraftController _playerAircraftController;
@@ -29,15 +29,15 @@ public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
     [Inject]
     public BattleEntryPoint(
         AircraftModel playerAircraftModelPrefab,
-        BulletBehaviour bulletPrefab,
         BattleCameraController cameraController,
+        FireController fireController,
         AircraftInput aircraftInput,
         StageLayout stageLayoutPrefab,
         StageLoader stageLoader)
     {
         _playerAircraftModelPrefab = playerAircraftModelPrefab;
-        _bulletPrefab = bulletPrefab;
         _cameraController = cameraController;
+        _fireController = fireController;
         _aircraftInput = aircraftInput;
         _stageLayoutPrefab = stageLayoutPrefab;
         _stageLoader = stageLoader;
@@ -45,17 +45,19 @@ public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
 
     public async UniTask StartAsync(CancellationToken cancellation)
     {
+        await _fireController.ReadyAsync(cancellation);
+
         _stageLoader.SetPlayerAircraftModelPrefab(_playerAircraftModelPrefab);
         var loadResult = await _stageLoader.LoadAsync(_stageLayoutPrefab, cancellation);
 
         var playerAircraft = loadResult.PlayerAircraft;
-        _playerAircraftController = new PlayerAircraftController(playerAircraft, _aircraftInput, _bulletPrefab);
+        _playerAircraftController = new PlayerAircraftController(playerAircraft, _aircraftInput, _fireController);
         _playerAircraftController.Initialize();
         playerAircraft.Ready();
 
         foreach (var aircraft in loadResult.EnemyAircrafts)
         {
-            var controller = new EnemyAircraftController(aircraft, _bulletPrefab);
+            var controller = new EnemyAircraftController(aircraft, _fireController);
             controller.Initialize();
             aircraft.Ready();
 

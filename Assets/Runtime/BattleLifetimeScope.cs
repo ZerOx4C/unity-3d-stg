@@ -31,6 +31,9 @@ public class BattleLifetimeScope : LifetimeScope
     {
         builder.Register<AircraftInput>(Lifetime.Singleton);
 
+        builder.Register<FireController>(Lifetime.Singleton)
+            .WithParameter(bulletPrefab);
+
         builder.Register<BattleCameraController>(Lifetime.Singleton)
             .WithParameter(cameraBehaviourPrefab);
 

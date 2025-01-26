@@ -1,4 +1,5 @@
 using Movement;
+using R3;
 using UnityEngine;
 
 namespace Behaviour
@@ -8,11 +9,14 @@ namespace Behaviour
         public float lifetime = 1;
 
         private float _lifetime;
+        private Subject<Unit> _onRelease;
 
         public BulletMovement Movement { get; private set; }
+        public Observable<Unit> OnRelease => _onRelease;
 
         private void Awake()
         {
+            _onRelease = new Subject<Unit>();
             Movement = GetComponent<BulletMovement>();
         }
 
@@ -24,9 +28,13 @@ namespace Behaviour
             }
             else
             {
-                // TODO: 後でプール化する
-                Destroy(gameObject);
+                _onRelease.OnNext(Unit.Default);
             }
+        }
+
+        private void OnDestroy()
+        {
+            _onRelease.Dispose();
         }
 
         public void Initialize()
