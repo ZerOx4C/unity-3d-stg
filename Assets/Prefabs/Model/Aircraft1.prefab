@@ -1862,7 +1862,7 @@ GameObject:
   - component: {fileID: 504966304188342475}
   - component: {fileID: 975592419453481468}
   m_Layer: 0
-  m_Name: MainWingL
+  m_Name: MainWingR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
