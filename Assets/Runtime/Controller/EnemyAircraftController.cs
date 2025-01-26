@@ -5,51 +5,41 @@ using UnityEngine;
 
 namespace Controller
 {
-    public class EnemyAircraftController : AircraftControllerBase
+    public class EnemyAircraftController
     {
         private readonly Queue<(float delay, Action action)> _actionQueue = new();
         private float _wait;
 
-        public EnemyAircraftController(
-            AircraftBehaviour aircraft,
-            FireController fireController,
-            FragmentController fragmentController)
-            : base(aircraft, fireController, fragmentController)
+        public EnemyAircraftController(AircraftBehaviour aircraft)
         {
-        }
-
-        public override void Initialize()
-        {
-            base.Initialize();
-
             _actionQueue.Enqueue((3, () =>
             {
-                Aircraft.Movement.SetPitch(0);
-                Aircraft.Movement.SetRoll(1);
+                aircraft.Movement.SetPitch(0);
+                aircraft.Movement.SetRoll(1);
             }));
             _actionQueue.Enqueue((3, () =>
             {
-                Aircraft.Movement.SetPitch(1);
-                Aircraft.Movement.SetRoll(0);
+                aircraft.Movement.SetPitch(1);
+                aircraft.Movement.SetRoll(0);
             }));
             _actionQueue.Enqueue((6, () =>
             {
-                Aircraft.Movement.SetPitch(0);
-                Aircraft.Movement.SetRoll(-1);
+                aircraft.Movement.SetPitch(0);
+                aircraft.Movement.SetRoll(-1);
             }));
             _actionQueue.Enqueue((3, () =>
             {
-                Aircraft.Movement.SetPitch(1);
-                Aircraft.Movement.SetRoll(0);
+                aircraft.Movement.SetPitch(1);
+                aircraft.Movement.SetRoll(0);
             }));
             _actionQueue.Enqueue((3, () =>
             {
-                Aircraft.Movement.SetPitch(0);
-                Aircraft.Movement.SetRoll(1);
+                aircraft.Movement.SetPitch(0);
+                aircraft.Movement.SetRoll(1);
             }));
         }
 
-        public override void Tick()
+        public void Tick()
         {
             if (0 < _wait)
             {

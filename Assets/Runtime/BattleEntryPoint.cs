@@ -14,6 +14,7 @@ using VContainer.Unity;
 
 public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
 {
+    private readonly AircraftController _aircraftController;
     private readonly AircraftInput _aircraftInput;
     private readonly BattleCameraController _cameraController;
     private readonly CollisionController _collisionController;
@@ -31,6 +32,7 @@ public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
 
     [Inject]
     public BattleEntryPoint(
+        AircraftController aircraftController,
         AircraftModel playerAircraftModelPrefab,
         BattleCameraController cameraController,
         CollisionController collisionController,
@@ -41,6 +43,7 @@ public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
         StageLoader stageLoader,
         TargetController targetController)
     {
+        _aircraftController = aircraftController;
         _playerAircraftModelPrefab = playerAircraftModelPrefab;
         _cameraController = cameraController;
         _collisionController = collisionController;
@@ -61,18 +64,18 @@ public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
         var loadResult = await _stageLoader.LoadAsync(_stageLayoutPrefab, cancellation);
 
         var playerAircraft = loadResult.PlayerAircraft;
-        _playerAircraftController = new PlayerAircraftController(playerAircraft, _aircraftInput, _fireController, _fragmentController);
-        _playerAircraftController.Initialize();
+        _playerAircraftController = new PlayerAircraftController(_aircraftInput);
+        _playerAircraftController.Initialize(playerAircraft);
+        _aircraftController.Add(playerAircraft);
         playerAircraft.Ready();
 
         foreach (var aircraft in loadResult.EnemyAircrafts)
         {
-            var controller = new EnemyAircraftController(aircraft, _fireController, _fragmentController);
-            controller.Initialize();
+            var controller = new EnemyAircraftController(aircraft);
+            _aircraftController.Add(aircraft);
             aircraft.Ready();
 
             _enemyAircraftControllers.Add(controller);
-            _disposables.Add(controller);
         }
 
         foreach (var target in loadResult.Targets)

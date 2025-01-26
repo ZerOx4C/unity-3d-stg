@@ -40,6 +40,7 @@ public class BattleLifetimeScope : LifetimeScope
         builder.RegisterInstance(fragmentBehaviourPrefab);
 
         builder.Register<AircraftInput>(Lifetime.Singleton);
+        builder.Register<AircraftController>(Lifetime.Singleton);
         builder.Register<FireController>(Lifetime.Singleton);
         builder.Register<BattleCameraController>(Lifetime.Singleton);
         builder.Register<PlayerAircraftController>(Lifetime.Singleton);

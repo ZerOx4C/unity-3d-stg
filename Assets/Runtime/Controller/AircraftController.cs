@@ -7,41 +7,35 @@ using VContainer;
 
 namespace Controller
 {
-    public abstract class AircraftControllerBase : IDisposable
+    public class AircraftController : IDisposable
     {
         private readonly CompositeDisposable _disposables = new();
         private readonly FireController _fireController;
         private readonly FragmentController _fragmentController;
 
         [Inject]
-        protected AircraftControllerBase(
-            AircraftBehaviour aircraft,
+        public AircraftController(
             FireController fireController,
             FragmentController fragmentController)
         {
-            Aircraft = aircraft;
             _fireController = fireController;
             _fragmentController = fragmentController;
         }
 
-        protected AircraftBehaviour Aircraft { get; }
-
-        public virtual void Dispose()
+        public void Dispose()
         {
             _disposables.Dispose();
         }
 
-        public virtual void Initialize()
+        public void Add(AircraftBehaviour aircraft)
         {
-            Aircraft.OnFire
-                .Subscribe(g => _fireController.Fire(Aircraft, g))
+            aircraft.OnFire
+                .Subscribe(g => _fireController.Fire(aircraft, g))
                 .AddTo(_disposables);
 
-            Aircraft.OnDead
-                .Subscribe(_ => _fragmentController.BreakAsync(Aircraft, CancellationToken.None).Forget())
+            aircraft.OnDead
+                .Subscribe(_ => _fragmentController.BreakAsync(aircraft, CancellationToken.None).Forget())
                 .AddTo(_disposables);
         }
-
-        public abstract void Tick();
     }
 }

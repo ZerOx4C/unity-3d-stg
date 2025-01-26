@@ -1,3 +1,4 @@
+using System;
 using Behaviour;
 using Input;
 using R3;
@@ -5,60 +6,47 @@ using VContainer;
 
 namespace Controller
 {
-    public class PlayerAircraftController : AircraftControllerBase
+    public class PlayerAircraftController : IDisposable
     {
         private readonly AircraftInput _aircraftInput;
         private readonly CompositeDisposable _disposables = new();
 
         [Inject]
-        public PlayerAircraftController(
-            AircraftBehaviour aircraft,
-            AircraftInput aircraftInput,
-            FireController fireController,
-            FragmentController fragmentController)
-            : base(aircraft, fireController, fragmentController)
+        public PlayerAircraftController(AircraftInput aircraftInput)
         {
             _aircraftInput = aircraftInput;
         }
 
-        public override void Dispose()
+        public void Dispose()
         {
-            base.Dispose();
-
             _disposables.Dispose();
         }
 
-        public override void Initialize()
+        public void Initialize(AircraftBehaviour aircraft)
         {
-            base.Initialize();
-
             _aircraftInput.Pitch.OnProgress.Merge(_aircraftInput.Pitch.OnEnded)
-                .Subscribe(c => Aircraft.Movement.SetPitch(c.ReadValue<float>()))
+                .Subscribe(c => aircraft.Movement.SetPitch(c.ReadValue<float>()))
                 .AddTo(_disposables);
 
             _aircraftInput.Roll.OnProgress.Merge(_aircraftInput.Roll.OnEnded)
-                .Subscribe(c => Aircraft.Movement.SetRoll(c.ReadValue<float>()))
+                .Subscribe(c => aircraft.Movement.SetRoll(c.ReadValue<float>()))
                 .AddTo(_disposables);
 
             _aircraftInput.Yaw.OnProgress.Merge(_aircraftInput.Yaw.OnEnded)
-                .Subscribe(c => Aircraft.Movement.SetYaw(c.ReadValue<float>()))
+                .Subscribe(c => aircraft.Movement.SetYaw(c.ReadValue<float>()))
                 .AddTo(_disposables);
 
             _aircraftInput.Throttle.OnProgress.Merge(_aircraftInput.Throttle.OnEnded)
-                .Subscribe(c => Aircraft.Movement.SetThrottle(c.ReadValue<float>()))
+                .Subscribe(c => aircraft.Movement.SetThrottle(c.ReadValue<float>()))
                 .AddTo(_disposables);
 
             _aircraftInput.Fire.OnBegan
-                .Subscribe(_ => Aircraft.Fire(true))
+                .Subscribe(_ => aircraft.Fire(true))
                 .AddTo(_disposables);
 
             _aircraftInput.Fire.OnEnded
-                .Subscribe(_ => Aircraft.Fire(false))
+                .Subscribe(_ => aircraft.Fire(false))
                 .AddTo(_disposables);
-        }
-
-        public override void Tick()
-        {
         }
     }
 }
