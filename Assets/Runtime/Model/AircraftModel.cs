@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -34,8 +33,8 @@ namespace Model
         [ContextMenu("Setup")]
         private void Setup()
         {
-            guns = ModelPartTag.GetTransformsByFlags(transform, ModelPartFlags.Gun).ToArray();
-            propellers = ModelPartTag.GetTransformsByFlags(transform, ModelPartFlags.Propeller).ToArray();
+            guns = ModelPartTag.GetTransformsByFlags(transform, ModelPartFlags.Gun);
+            propellers = ModelPartTag.GetTransformsByFlags(transform, ModelPartFlags.Propeller);
             EditorUtility.SetDirty(this);
         }
 #endif

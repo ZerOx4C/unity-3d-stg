@@ -2,17 +2,18 @@ using System;
 using Behaviour;
 using R3;
 using VContainer;
-using Object = UnityEngine.Object;
 
 namespace Controller
 {
     public class TargetController : IDisposable
     {
         private readonly CompositeDisposable _disposables = new();
+        private readonly FragmentController _fragmentController;
 
         [Inject]
-        public TargetController()
+        public TargetController(FragmentController fragmentController)
         {
+            _fragmentController = fragmentController;
         }
 
         public void Dispose()
@@ -23,7 +24,7 @@ namespace Controller
         public void Add(TargetBehaviour target)
         {
             target.OnDead
-                .Subscribe(_ => Object.Destroy(target.gameObject))
+                .Subscribe(_ => _fragmentController.Break(target))
                 .AddTo(_disposables);
         }
     }

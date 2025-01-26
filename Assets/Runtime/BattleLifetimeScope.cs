@@ -17,6 +17,7 @@ public class BattleLifetimeScope : LifetimeScope
     public StageLayout stageLayoutPrefab;
     public AircraftModel playerAircraftModelPrefab;
     public TargetBehaviour targetBehaviourPrefab;
+    public FragmentBehaviour fragmentBehaviourPrefab;
 
     protected override void Awake()
     {
@@ -36,6 +37,7 @@ public class BattleLifetimeScope : LifetimeScope
         builder.RegisterInstance(stageLayoutPrefab);
         builder.RegisterInstance(playerAircraftModelPrefab);
         builder.RegisterInstance(targetBehaviourPrefab);
+        builder.RegisterInstance(fragmentBehaviourPrefab);
 
         builder.Register<AircraftInput>(Lifetime.Singleton);
         builder.Register<FireController>(Lifetime.Singleton);
@@ -43,6 +45,7 @@ public class BattleLifetimeScope : LifetimeScope
         builder.Register<PlayerAircraftController>(Lifetime.Singleton);
         builder.Register<TargetController>(Lifetime.Singleton);
         builder.Register<CollisionController>(Lifetime.Singleton);
+        builder.Register<FragmentController>(Lifetime.Singleton);
         builder.Register<StageLoader>(Lifetime.Singleton);
         builder.RegisterEntryPoint<BattleEntryPoint>();
     }

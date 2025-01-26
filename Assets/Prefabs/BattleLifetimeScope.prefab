@@ -55,3 +55,4 @@ MonoBehaviour:
   stageLayoutPrefab: {fileID: 9178224638344324190, guid: 05b77b211694f2345ac2af1bc582bfaa, type: 3}
   playerAircraftModelPrefab: {fileID: 6331625549027247271, guid: 6f4304c0e26c0a649a87baea24a268c8, type: 3}
   targetBehaviourPrefab: {fileID: -5303567469055222836, guid: a14ff3176d5afcb4d8987cf6b591fe44, type: 3}
+  fragmentBehaviourPrefab: {fileID: 7418184757333757693, guid: 2b791ebdc03c54a4590ddb7157402ae8, type: 3}
