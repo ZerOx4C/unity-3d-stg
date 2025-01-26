@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading;
 using Behaviour;
 using Cysharp.Threading.Tasks;
@@ -27,13 +26,9 @@ namespace Controller
             _fragmentInstantiator.SetParent(_root);
         }
 
-        public void Break(TargetBehaviour target)
+        public async UniTask BreakAsync(IFragmentsOwner owner, CancellationToken cancellation)
         {
-            BreakAsync(target.gameObject, target.ModelLoader.Model.Fragments, CancellationToken.None).Forget();
-        }
-
-        private async UniTask BreakAsync(GameObject owner, IReadOnlyList<Transform> transforms, CancellationToken cancellation)
-        {
+            var transforms = owner.Fragments;
             var fragments = await _fragmentInstantiator
                 .SetTransforms(transforms)
                 .InstantiateAsync(cancellation).All;
@@ -41,14 +36,15 @@ namespace Controller
             for (var i = 0; i < transforms.Count; i++)
             {
                 var fragment = fragments[i];
-                transforms[i].SetParent(fragment.transform, true);
-
                 fragment.lifetime = 5;
+                fragment.Rigidbody.linearVelocity = owner.RigidbodyReader.LinearVelocity;
+                fragment.Rigidbody.angularVelocity = owner.RigidbodyReader.AngularVelocity;
                 fragment.Rigidbody.AddForce(50 * Random.insideUnitSphere, ForceMode.Impulse);
                 fragment.Rigidbody.AddTorque(5 * Random.insideUnitSphere, ForceMode.Impulse);
+                transforms[i].SetParent(fragment.transform, true);
             }
 
-            Object.Destroy(owner);
+            Object.Destroy(owner.gameObject);
         }
     }
 }

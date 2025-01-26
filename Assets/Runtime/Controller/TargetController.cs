@@ -1,5 +1,7 @@
 using System;
+using System.Threading;
 using Behaviour;
+using Cysharp.Threading.Tasks;
 using R3;
 using VContainer;
 
@@ -24,7 +26,7 @@ namespace Controller
         public void Add(TargetBehaviour target)
         {
             target.OnDead
-                .Subscribe(_ => _fragmentController.Break(target))
+                .Subscribe(_ => _fragmentController.BreakAsync(target, CancellationToken.None).Forget())
                 .AddTo(_disposables);
         }
     }
