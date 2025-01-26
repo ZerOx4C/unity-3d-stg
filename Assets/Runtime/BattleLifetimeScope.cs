@@ -29,24 +29,19 @@ public class BattleLifetimeScope : LifetimeScope
 
     protected override void Configure(IContainerBuilder builder)
     {
+        builder.RegisterInstance(debugHudPrefab);
+        builder.RegisterInstance(cameraBehaviourPrefab);
+        builder.RegisterInstance(aircraftBehaviourPrefab);
+        builder.RegisterInstance(bulletPrefab);
+        builder.RegisterInstance(stageLayoutPrefab);
+        builder.RegisterInstance(playerAircraftModelPrefab);
+        builder.RegisterInstance(targetModelPrefab);
+
         builder.Register<AircraftInput>(Lifetime.Singleton);
-
-        builder.Register<FireController>(Lifetime.Singleton)
-            .WithParameter(bulletPrefab);
-
-        builder.Register<BattleCameraController>(Lifetime.Singleton)
-            .WithParameter(cameraBehaviourPrefab);
-
+        builder.Register<FireController>(Lifetime.Singleton);
+        builder.Register<BattleCameraController>(Lifetime.Singleton);
         builder.Register<PlayerAircraftController>(Lifetime.Singleton);
-
-        builder.Register<StageLoader>(Lifetime.Singleton)
-            .WithParameter(aircraftBehaviourPrefab)
-            .WithParameter(targetModelPrefab);
-
-        builder.RegisterEntryPoint<BattleEntryPoint>()
-            .WithParameter(aircraftBehaviourPrefab)
-            .WithParameter(playerAircraftModelPrefab)
-            .WithParameter(stageLayoutPrefab)
-            .WithParameter(bulletPrefab);
+        builder.Register<StageLoader>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<BattleEntryPoint>();
     }
 }
