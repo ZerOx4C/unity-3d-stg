@@ -14,8 +14,9 @@ namespace Controller
         public PlayerAircraftController(
             AircraftBehaviour aircraft,
             AircraftInput aircraftInput,
-            FireController fireController)
-            : base(aircraft, fireController)
+            FireController fireController,
+            FragmentController fragmentController)
+            : base(aircraft, fireController, fragmentController)
         {
             _aircraftInput = aircraftInput;
         }

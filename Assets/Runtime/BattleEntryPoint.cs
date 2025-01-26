@@ -61,13 +61,13 @@ public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
         var loadResult = await _stageLoader.LoadAsync(_stageLayoutPrefab, cancellation);
 
         var playerAircraft = loadResult.PlayerAircraft;
-        _playerAircraftController = new PlayerAircraftController(playerAircraft, _aircraftInput, _fireController);
+        _playerAircraftController = new PlayerAircraftController(playerAircraft, _aircraftInput, _fireController, _fragmentController);
         _playerAircraftController.Initialize();
         playerAircraft.Ready();
 
         foreach (var aircraft in loadResult.EnemyAircrafts)
         {
-            var controller = new EnemyAircraftController(aircraft, _fireController);
+            var controller = new EnemyAircraftController(aircraft, _fireController, _fragmentController);
             controller.Initialize();
             aircraft.Ready();
 

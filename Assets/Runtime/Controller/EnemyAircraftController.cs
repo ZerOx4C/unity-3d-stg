@@ -12,8 +12,9 @@ namespace Controller
 
         public EnemyAircraftController(
             AircraftBehaviour aircraft,
-            FireController fireController)
-            : base(aircraft, fireController)
+            FireController fireController,
+            FragmentController fragmentController)
+            : base(aircraft, fireController, fragmentController)
         {
         }
 

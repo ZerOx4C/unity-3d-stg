@@ -1,5 +1,7 @@
 using System;
+using System.Threading;
 using Behaviour;
+using Cysharp.Threading.Tasks;
 using R3;
 using VContainer;
 
@@ -9,14 +11,17 @@ namespace Controller
     {
         private readonly CompositeDisposable _disposables = new();
         private readonly FireController _fireController;
+        private readonly FragmentController _fragmentController;
 
         [Inject]
         protected AircraftControllerBase(
             AircraftBehaviour aircraft,
-            FireController fireController)
+            FireController fireController,
+            FragmentController fragmentController)
         {
             Aircraft = aircraft;
             _fireController = fireController;
+            _fragmentController = fragmentController;
         }
 
         protected AircraftBehaviour Aircraft { get; }
@@ -30,6 +35,10 @@ namespace Controller
         {
             Aircraft.OnFire
                 .Subscribe(g => _fireController.Fire(Aircraft, g))
+                .AddTo(_disposables);
+
+            Aircraft.OnDead
+                .Subscribe(_ => _fragmentController.BreakAsync(Aircraft, CancellationToken.None).Forget())
                 .AddTo(_disposables);
         }
 

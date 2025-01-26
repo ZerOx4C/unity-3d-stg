@@ -9,9 +9,11 @@ namespace Model
     public class AircraftModel : MonoBehaviour
     {
         [SerializeField] private Transform[] guns;
+        [SerializeField] private Transform[] fragments;
         [SerializeField] private Transform[] propellers;
 
         public IReadOnlyList<Transform> Guns => guns;
+        public IReadOnlyList<Transform> Fragments => fragments;
         public float PropellerSpeed { get; set; }
 
         private void Update()
@@ -34,6 +36,7 @@ namespace Model
         private void Setup()
         {
             guns = ModelPartTag.GetTransformsByFlags(transform, ModelPartFlags.Gun);
+            fragments = ModelPartTag.GetTransformsByFlags(transform, ModelPartFlags.Fragment);
             propellers = ModelPartTag.GetTransformsByFlags(transform, ModelPartFlags.Propeller);
             EditorUtility.SetDirty(this);
         }
