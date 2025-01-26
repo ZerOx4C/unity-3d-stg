@@ -66,6 +66,12 @@ namespace Behaviour
             _fire = active;
         }
 
+        public void Damage()
+        {
+            // TODO: ダメージを受けて適宜破壊イベント発行？
+            // ビューと混ざってきてる感じがある
+        }
+
         private void UpdatePropeller()
         {
             if (_model is null)

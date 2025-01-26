@@ -13,15 +13,19 @@ namespace Controller
     {
         private readonly Instantiator.Config<BulletBehaviour> _bulletInstantiator;
         private readonly Stack<BulletBehaviour> _bulletPool = new();
+        private readonly CollisionController _collisionController;
         private readonly CompositeDisposable _disposable = new();
         private int _bulletCount;
         private Transform _root;
         private bool _warming;
 
         [Inject]
-        public FireController(BulletBehaviour bulletBehaviourPrefab)
+        public FireController(
+            BulletBehaviour bulletBehaviourPrefab,
+            CollisionController collisionController)
         {
             _bulletInstantiator = Instantiator.Create(bulletBehaviourPrefab);
+            _collisionController = collisionController;
         }
 
         public async UniTask ReadyAsync(CancellationToken cancellation)
@@ -38,7 +42,7 @@ namespace Controller
         {
             var bullet = ObtainBullet();
             bullet.Movement.Initialize(owner.Movement, gun, 100);
-            bullet.Initialize();
+            bullet.Initialize(owner);
         }
 
         private async UniTask WarmAsync(int count, CancellationToken cancellation)
@@ -85,6 +89,8 @@ namespace Controller
 
         private void InitializeBullet(BulletBehaviour bullet)
         {
+            _collisionController.RegisterBullet(bullet);
+
             bullet.name = $"Bullet_{++_bulletCount}";
             bullet.OnRelease
                 .Subscribe(_ =>

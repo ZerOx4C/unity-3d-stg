@@ -41,6 +41,7 @@ public class BattleLifetimeScope : LifetimeScope
         builder.Register<FireController>(Lifetime.Singleton);
         builder.Register<BattleCameraController>(Lifetime.Singleton);
         builder.Register<PlayerAircraftController>(Lifetime.Singleton);
+        builder.Register<CollisionController>(Lifetime.Singleton);
         builder.Register<StageLoader>(Lifetime.Singleton);
         builder.RegisterEntryPoint<BattleEntryPoint>();
     }

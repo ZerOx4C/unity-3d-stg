@@ -16,6 +16,7 @@ public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
 {
     private readonly AircraftInput _aircraftInput;
     private readonly BattleCameraController _cameraController;
+    private readonly CollisionController _collisionController;
     private readonly CompositeDisposable _disposables = new();
     private readonly List<EnemyAircraftController> _enemyAircraftControllers = new();
     private readonly FireController _fireController;
@@ -30,6 +31,7 @@ public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
     public BattleEntryPoint(
         AircraftModel playerAircraftModelPrefab,
         BattleCameraController cameraController,
+        CollisionController collisionController,
         FireController fireController,
         AircraftInput aircraftInput,
         StageLayout stageLayoutPrefab,
@@ -37,6 +39,7 @@ public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
     {
         _playerAircraftModelPrefab = playerAircraftModelPrefab;
         _cameraController = cameraController;
+        _collisionController = collisionController;
         _fireController = fireController;
         _aircraftInput = aircraftInput;
         _stageLayoutPrefab = stageLayoutPrefab;
@@ -99,6 +102,8 @@ public class BattleEntryPoint : IAsyncStartable, ITickable, IDisposable
         {
             controller.Tick();
         }
+
+        _collisionController.Tick();
 
         DebugHud.Log("speed", $"speed:{Vector3.Dot(_playerAircraft.transform.forward, _playerAircraft.Movement.LinearVelocity):f2}");
         DebugHud.Log("altitude", $"altitude:{_playerAircraft.transform.position.y:f2}");

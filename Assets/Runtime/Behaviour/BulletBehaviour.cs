@@ -11,6 +11,7 @@ namespace Behaviour
         private float _lifetime;
         private Subject<Unit> _onRelease;
 
+        public AircraftBehaviour Owner { get; private set; }
         public BulletMovement Movement { get; private set; }
         public Observable<Unit> OnRelease => _onRelease;
 
@@ -37,9 +38,15 @@ namespace Behaviour
             _onRelease.Dispose();
         }
 
-        public void Initialize()
+        public void Initialize(AircraftBehaviour owner)
         {
             _lifetime = lifetime;
+            Owner = owner;
+        }
+
+        public void Hit()
+        {
+            _onRelease.OnNext(Unit.Default);
         }
     }
 }
