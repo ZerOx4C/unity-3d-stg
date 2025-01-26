@@ -21,8 +21,7 @@ namespace Controller
         public async UniTask ReadyAsync(CancellationToken cancellation)
         {
             _cameraBehaviour = await Instantiator.Create(_cameraBehaviourPrefab)
-                .InstantiateAsync(cancellation)
-                .First();
+                .InstantiateAsync(cancellation).First;
         }
 
         public void SetFollowTarget(Transform target)

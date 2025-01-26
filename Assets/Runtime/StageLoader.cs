@@ -34,8 +34,7 @@ public class StageLoader
     public async UniTask<Result> LoadAsync(StageLayout stageLayoutPrefab, CancellationToken cancellation)
     {
         var stageLayout = await Instantiator.Create(stageLayoutPrefab)
-            .InstantiateAsync(cancellation)
-            .First();
+            .InstantiateAsync(cancellation).First;
 
         var playerAircraft = (await InstantiateWithLocatorAsync(_aircraftBehaviourPrefab, new[] { stageLayout.PlayerLocator }, cancellation))[0];
         var enemyAircrafts = await InstantiateWithLocatorAsync(_aircraftBehaviourPrefab, stageLayout.EnemyAircraftLocators, cancellation);

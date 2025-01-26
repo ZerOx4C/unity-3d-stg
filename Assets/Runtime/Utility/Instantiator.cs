@@ -4,6 +4,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Assertions;
+using Object = UnityEngine.Object;
 
 namespace Utility
 {
@@ -16,22 +17,27 @@ namespace Utility
 
         public readonly struct Result<T> where T : Object
         {
-            public Result(UniTask<T[]> task)
+            public Result(T[] instances)
             {
-                _task = UniTask.Lazy(async () => await task);
+                All = instances;
+                First = All[0];
             }
 
-            private readonly AsyncLazy<T[]> _task;
+            public T[] All { get; }
+            public T First { get; }
+        }
 
-            public async UniTask<T> First()
+        public readonly struct AsyncResult<T> where T : Object
+        {
+            public AsyncResult(UniTask<T[]> task)
             {
-                return (await _task)[0];
+                var lazyTask = task.ToAsyncLazy();
+                All = UniTask.Create(async () => await lazyTask);
+                First = UniTask.Create(async () => (await lazyTask)[0]);
             }
 
-            public async UniTask<T[]> All()
-            {
-                return await _task;
-            }
+            public UniTask<T[]> All { get; }
+            public UniTask<T> First { get; }
         }
 
         public class Config<T> where T : Object
@@ -101,12 +107,44 @@ namespace Utility
                 return this;
             }
 
-            public Result<T> InstantiateAsync(CancellationToken cancellation)
+            public Result<T> Instantiate()
             {
-                var task = Object.InstantiateAsync(_prefab, _count, _parent, _positions, _rotations, cancellation)
-                    .ToUniTask(cancellationToken: cancellation);
+                var instances = new T[_count];
 
-                return new Result<T>(task);
+                if (1 < _positions.Length)
+                {
+                    for (var i = 0; i < _count; i++)
+                    {
+                        instances[i] = Object.Instantiate(_prefab, _positions[i], _rotations[i], _parent);
+                    }
+                }
+                else
+                {
+                    for (var i = 0; i < _count; i++)
+                    {
+                        instances[i] = Object.Instantiate(_prefab, _positions[0], _rotations[0], _parent);
+                    }
+                }
+
+                return new Result<T>(instances);
+            }
+
+            public AsyncResult<T> InstantiateAsync(CancellationToken cancellation)
+            {
+                if (1 < _positions.Length)
+                {
+                    var task = Object.InstantiateAsync(_prefab, _count, _parent, _positions, _rotations, cancellation)
+                        .ToUniTask(cancellationToken: cancellation);
+
+                    return new AsyncResult<T>(task);
+                }
+                else
+                {
+                    var task = Object.InstantiateAsync(_prefab, _count, _parent, _positions[0], _rotations[0], cancellation)
+                        .ToUniTask(cancellationToken: cancellation);
+
+                    return new AsyncResult<T>(task);
+                }
             }
         }
     }

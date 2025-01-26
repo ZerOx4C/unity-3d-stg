@@ -52,8 +52,7 @@ namespace Behaviour
             _model = await Instantiator.Create(modelPrefab)
                 .SetParent(transform)
                 .SetTransforms(transform)
-                .InstantiateAsync(cancellation)
-                .First();
+                .InstantiateAsync(cancellation).First;
         }
 
         public void Ready()
